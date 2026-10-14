@@ -4,16 +4,45 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>getsols.xyz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --fg: #f5f5f5;
+    --dim: rgba(255,255,255,0.45);
+    --faint: rgba(255,255,255,0.12);
+  }
 
   html, body {
     height: 100%;
     background: #000;
-    color: #fff;
-    font-family: 'Courier New', monospace;
+    color: var(--fg);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
     overflow: hidden;
-    cursor: crosshair; /* normal cursor visible */
+    cursor: crosshair;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* subtle vignette + grain */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 7;
+    background:
+      radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.85) 100%),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.02) 0px,
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    mix-blend-mode: overlay;
   }
 
   canvas#stars {
@@ -22,40 +51,46 @@
     z-index: 0;
   }
 
-  /* Cursor glow */
+  /* cursor glow */
   .cursor-glow {
     position: fixed;
     top: 0; left: 0;
-    width: 260px;
-    height: 260px;
+    width: 340px;
+    height: 340px;
     border-radius: 50%;
     pointer-events: none;
     z-index: 3;
     transform: translate(-50%, -50%);
     background: radial-gradient(
       circle,
-      rgba(255,255,255,0.18) 0%,
-      rgba(255,255,255,0.08) 25%,
-      rgba(255,255,255,0.03) 45%,
-      rgba(255,255,255,0) 70%
+      rgba(255,255,255,0.20) 0%,
+      rgba(255,255,255,0.09) 22%,
+      rgba(255,255,255,0.035) 45%,
+      rgba(255,255,255,0) 72%
     );
     mix-blend-mode: screen;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.35s ease;
   }
 
+  /* corner brackets */
   .corner {
     position: fixed;
-    width: 22px;
-    height: 22px;
-    border: 1px solid #fff;
-    opacity: 0.35;
+    width: 28px;
+    height: 28px;
+    border: 1px solid rgba(255,255,255,0.5);
     z-index: 5;
     pointer-events: none;
+    animation: cornerFade 3s ease-in-out infinite alternate;
   }
-  .corner.tl { top: 16px;    left: 16px;    border-right: none; border-bottom: none; }
-  .corner.tr { top: 16px;    right: 16px;   border-left: none;  border-bottom: none; }
-  .corner.bl { bottom: 16px; left: 16px;    border-right: none; border-top: none; }
-  .corner.br { bottom: 16px; right: 16px;   border-left: none;  border-top: none; }
+  .corner.tl { top: 22px;    left: 22px;    border-right: none; border-bottom: none; }
+  .corner.tr { top: 22px;    right: 22px;   border-left: none;  border-bottom: none; }
+  .corner.bl { bottom: 22px; left: 22px;    border-right: none; border-top: none; }
+  .corner.br { bottom: 22px; right: 22px;   border-left: none;  border-top: none; }
+
+  @keyframes cornerFade {
+    0%   { opacity: 0.35; }
+    100% { opacity: 0.75; }
+  }
 
   .stage {
     position: relative;
@@ -65,68 +100,125 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 28px;
+    gap: 40px;
     padding: 20px;
     text-align: center;
   }
 
+  /* ---- Title ---- */
   .title {
-    font-size: clamp(2rem, 7vw, 4.5rem);
-    letter-spacing: 0.12em;
+    font-size: clamp(2.2rem, 8vw, 5rem);
+    letter-spacing: 0.15em;
     font-weight: 700;
     color: #fff;
-    text-shadow: 0 0 20px rgba(255,255,255,0.35);
+    text-shadow:
+      0 0 10px rgba(255,255,255,0.55),
+      0 0 30px rgba(255,255,255,0.25),
+      0 0 60px rgba(255,255,255,0.10);
     min-height: 1.2em;
+    position: relative;
+    animation: titlePulse 4s ease-in-out infinite;
+  }
+
+  @keyframes titlePulse {
+    0%, 100% {
+      text-shadow:
+        0 0 10px rgba(255,255,255,0.55),
+        0 0 30px rgba(255,255,255,0.25),
+        0 0 60px rgba(255,255,255,0.10);
+    }
+    50% {
+      text-shadow:
+        0 0 14px rgba(255,255,255,0.75),
+        0 0 40px rgba(255,255,255,0.35),
+        0 0 80px rgba(255,255,255,0.15);
+    }
   }
 
   .title .cursor {
     display: inline-block;
     width: 3px;
-    height: 0.9em;
+    height: 0.85em;
     background: #fff;
-    margin-left: 6px;
+    margin-left: 8px;
     transform: translateY(0.08em);
+    box-shadow: 0 0 10px rgba(255,255,255,0.9);
     animation: blink 1s steps(1) infinite;
   }
 
   @keyframes blink { 50% { opacity: 0; } }
 
+  /* ---- Buttons ---- */
   .buttons {
     display: flex;
-    gap: 16px;
+    gap: 18px;
     flex-wrap: wrap;
     justify-content: center;
   }
 
   .btn {
+    position: relative;
     display: inline-block;
-    padding: 16px 44px;
-    background: transparent;
+    padding: 18px 48px;
+    background: rgba(255,255,255,0.02);
     color: #fff;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
     letter-spacing: 0.35em;
-    text-transform: uppercase;
+    text-transform: lowercase;
     text-decoration: none;
-    border: 1.5px solid #fff;
+    border: 1px solid rgba(255,255,255,0.55);
     border-radius: 6px;
-    transition: all 0.25s ease;
-    cursor: pointer; /* real pointer on buttons */
+    overflow: hidden;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.35s ease,
+      transform 0.25s ease,
+      letter-spacing 0.35s ease;
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+  }
+
+  /* sliding fill */
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: translateX(-101%);
+    transition: transform 0.45s cubic-bezier(.65,.05,.36,1);
+    z-index: -1;
   }
 
   .btn:hover {
-    background: #fff;
     color: #000;
-    box-shadow: 0 0 24px rgba(255,255,255,0.55),
-                0 0 60px rgba(255,255,255,0.25);
-    transform: translateY(-1px);
+    border-color: #fff;
+    letter-spacing: 0.42em;
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 24px rgba(255,255,255,0.5),
+      0 0 60px rgba(255,255,255,0.22),
+      0 10px 40px rgba(255,255,255,0.08);
   }
 
+  .btn:hover::before {
+    transform: translateX(0);
+  }
+
+  /* ---- Hint ---- */
   .hint {
-    font-size: 0.7rem;
-    letter-spacing: 0.5em;
+    font-size: 0.68rem;
+    letter-spacing: 0.55em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
+    color: var(--dim);
+    animation: hintFade 3s ease-in-out infinite;
+  }
+
+  @keyframes hintFade {
+    0%, 100% { opacity: 0.5; }
+    50%      { opacity: 1; }
   }
 </style>
 </head>
@@ -144,11 +236,11 @@
     <h1 class="title"><span id="typed"></span><span class="cursor"></span></h1>
 
     <div class="buttons">
-      <a class="btn" href="#" id="freeBtn">Free</a>
-      <a class="btn" href="https://discord.gg/4whvyDFNBE" target="_blank" rel="noopener">Get Key</a>
+      <a class="btn" href="https://discord.gg/4whvyDFNBE" target="_blank" rel="noopener">free script</a>
+      <a class="btn" href="https://discord.gg/4whvyDFNBE" target="_blank" rel="noopener">get key</a>
     </div>
 
-    <p class="hint">Click to join</p>
+    <p class="hint">click to join</p>
   </main>
 
 <script>
@@ -159,12 +251,12 @@ let i = 0, forward = true;
 function typeLoop() {
   if (forward) {
     el.textContent = text.slice(0, ++i);
-    if (i === text.length) { forward = false; return setTimeout(typeLoop, 2200); }
-    setTimeout(typeLoop, 110);
+    if (i === text.length) { forward = false; return setTimeout(typeLoop, 2400); }
+    setTimeout(typeLoop, 120);
   } else {
     el.textContent = text.slice(0, --i);
-    if (i === 0) { forward = true; return setTimeout(typeLoop, 700); }
-    setTimeout(typeLoop, 60);
+    if (i === 0) { forward = true; return setTimeout(typeLoop, 800); }
+    setTimeout(typeLoop, 55);
   }
 }
 typeLoop();
@@ -197,11 +289,10 @@ window.addEventListener("mousemove", (e) => {
 window.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
 window.addEventListener("mouseenter", () => { glow.style.opacity = "1"; });
 
-/* Star layers */
 const LAYERS = [
-  { count: 120, r: 0.5, speed: 0.005, parallax: 8  },
-  { count: 80,  r: 0.9, speed: 0.010, parallax: 18 },
-  { count: 40,  r: 1.4, speed: 0.018, parallax: 32 },
+  { count: 140, r: 0.5, speed: 0.005, parallax: 8  },
+  { count: 90,  r: 0.9, speed: 0.010, parallax: 20 },
+  { count: 45,  r: 1.4, speed: 0.018, parallax: 34 },
 ];
 
 const layers = LAYERS.map((cfg) => {
@@ -226,15 +317,17 @@ function spawnMeteor() {
   meteors.push({
     x: Math.random() * W,
     y: -20,
-    len: Math.random() * 80 + 60,
-    speed: Math.random() * 4 + 4,
+    len: Math.random() * 100 + 80,
+    speed: Math.random() * 5 + 5,
     angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+    life: 1,
   });
 }
-setInterval(spawnMeteor, 1400);
+setInterval(spawnMeteor, 1100);
 
 function draw() {
-  ctx.fillStyle = "rgba(0,0,0,0.4)";
+  /* motion blur trail */
+  ctx.fillStyle = "rgba(0,0,0,0.35)";
   ctx.fillRect(0, 0, W, H);
 
   const t = performance.now() / 1000;
@@ -269,16 +362,25 @@ function draw() {
     const tailY = m.y - Math.sin(m.angle) * m.len;
 
     const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
-    grad.addColorStop(0, "rgba(255,255,255,0.95)");
-    grad.addColorStop(0.3, "rgba(255,255,255,0.4)");
+    grad.addColorStop(0, "rgba(255,255,255,1)");
+    grad.addColorStop(0.35, "rgba(255,255,255,0.5)");
     grad.addColorStop(1, "rgba(255,255,255,0)");
 
     ctx.strokeStyle = grad;
-    ctx.lineWidth = 1.6;
+    ctx.lineWidth = 1.8;
+    ctx.shadowColor = "rgba(255,255,255,0.9)";
+    ctx.shadowBlur = 12;
     ctx.beginPath();
     ctx.moveTo(m.x, m.y);
     ctx.lineTo(tailX, tailY);
     ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    /* bright head */
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(255,255,255,1)";
+    ctx.arc(m.x, m.y, 1.6, 0, Math.PI * 2);
+    ctx.fill();
 
     if (m.y > H + 100 || m.x > W + 100 || m.x < -100) {
       meteors.splice(i, 1);
