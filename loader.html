@@ -1,272 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>getsols.xyz — loader</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      height: 100%;
-      background: #07060f;
-      color: #e5e5e5;
-      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-    }
-    .topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 22px;
-      border-bottom: 1px solid #1a1a2e;
-      background: rgba(7, 6, 15, 0.85);
-      backdrop-filter: blur(8px);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 1.1rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      background: linear-gradient(90deg, #a855f7, #22d3ee);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .brand .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #22d3ee;
-      box-shadow: 0 0 10px #22d3ee;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1;   box-shadow: 0 0 10px #22d3ee; }
-      50%      { opacity: 0.5; box-shadow: 0 0 20px #22d3ee; }
-    }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-    .actions button {
-      background: #131324;
-      color: #e5e5e5;
-      border: 1px solid #232340;
-      padding: 8px 16px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-      transition: all 0.15s ease;
-    }
-    .actions button:hover {
-      background: #1c1c34;
-      border-color: #a855f7;
-      color: #fff;
-    }
-    .actions button.copied {
-      background: #16a34a;
-      border-color: #22c55e;
-      color: #fff;
-    }
-    .code-wrap {
-      position: relative;
-      padding: 22px;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-    .meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: #6b6b8a;
-      margin-bottom: 10px;
-      letter-spacing: 0.5px;
-    }
-    .meta .right { color: #22d3ee; }
-    pre {
-      background: #0b0a17;
-      border: 1px solid #1a1a2e;
-      border-radius: 10px;
-      padding: 20px;
-      overflow-x: auto;
-      font-size: 13.5px;
-      line-height: 1.6;
-      color: #d4d4e0;
-      box-shadow: 0 0 30px rgba(168, 85, 247, 0.06);
-      position: relative;
-    }
-    pre::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 10px;
-      pointer-events: none;
-      background: linear-gradient(135deg, rgba(168,85,247,0.06), transparent 40%, rgba(34,211,238,0.06));
-    }
-    code {
-      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-      white-space: pre;
-      display: block;
-    }
-    .lines {
-      color: #333;
-      user-select: none;
-      margin-right: 18px;
-      display: inline-block;
-      text-align: right;
-      min-width: 30px;
-    }
-    .state {
-      text-align: center;
-      padding: 60px 20px;
-      color: #6b6b8a;
-      font-size: 14px;
-      letter-spacing: 1px;
-    }
-    .state.error { color: #ef4444; }
-    .spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      border: 2px solid #232340;
-      border-top-color: #22d3ee;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      vertical-align: middle;
-      margin-right: 8px;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .caret {
-      display: inline-block;
-      width: 8px;
-      height: 14px;
-      background: #22d3ee;
-      margin-left: 4px;
-      vertical-align: -2px;
-      animation: caretBlink 1s step-end infinite;
-    }
-    @keyframes caretBlink {
-      0%, 100% { opacity: 1; }
-      50%      { opacity: 0; }
-    }
-    .footer {
-      text-align: center;
-      font-size: 11px;
-      color: #3a3a52;
-      padding: 30px 20px 40px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-    .footer a { color: #a855f7; text-decoration: none; }
-    .footer a:hover { color: #22d3ee; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>getsols.xyz / loader</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --fg: #f5f5f5;
+    --dim: rgba(255,255,255,0.45);
+    --accent: #7dd3fc;
+  }
+
+  html, body {
+    height: 100%;
+    background: #000;
+    color: var(--fg);
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    overflow: hidden;
+    cursor: crosshair;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 7;
+    background:
+      radial-gradient(circle at center, transparent 45%, rgba(0,0,0,0.85) 100%),
+      repeating-linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.02) 0px,
+        rgba(255,255,255,0.02) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    mix-blend-mode: overlay;
+  }
+
+  canvas#stars { position: fixed; inset: 0; z-index: 0; }
+
+  .cursor-glow {
+    position: fixed;
+    top: 0; left: 0;
+    width: 340px; height: 340px;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 3;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      circle,
+      rgba(255,255,255,0.18) 0%,
+      rgba(255,255,255,0.08) 22%,
+      rgba(255,255,255,0.03) 45%,
+      rgba(255,255,255,0) 72%
+    );
+    mix-blend-mode: screen;
+    transition: opacity 0.35s ease;
+  }
+
+  .corner {
+    position: fixed;
+    width: 28px; height: 28px;
+    border: 1px solid rgba(255,255,255,0.5);
+    z-index: 5;
+    pointer-events: none;
+    animation: cornerFade 3s ease-in-out infinite alternate;
+  }
+  .corner.tl { top: 22px;    left: 22px;    border-right: none; border-bottom: none; }
+  .corner.tr { top: 22px;    right: 22px;   border-left: none;  border-bottom: none; }
+  .corner.bl { bottom: 22px; left: 22px;    border-right: none; border-top: none; }
+  .corner.br { bottom: 22px; right: 22px;   border-left: none;  border-top: none; }
+  @keyframes cornerFade { 0% { opacity: 0.35; } 100% { opacity: 0.75; } }
+
+  .topbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 8;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 28px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: #fff;
+  }
+
+  .brand .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px #fff, 0 0 20px rgba(255,255,255,0.6);
+    animation: dotPulse 1.8s ease-in-out infinite;
+  }
+  @keyframes dotPulse {
+    0%, 100% { opacity: 1;   transform: scale(1); }
+    50%      { opacity: 0.5; transform: scale(0.85); }
+  }
+
+  .brand .sep  { color: rgba(255,255,255,0.25); }
+  .brand .path b { color: #fff; font-weight: 500; }
+
+  .stage {
+    position: relative;
+    z-index: 6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 100px 24px 60px;
+    text-align: center;
+  }
+
+  .heading {
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    letter-spacing: 0.18em;
+    font-weight: 700;
+    color: #fff;
+    text-shadow:
+      0 0 10px rgba(255,255,255,0.55),
+      0 0 30px rgba(255,255,255,0.25);
+    animation: titlePulse 4s ease-in-out infinite;
+  }
+  @keyframes titlePulse {
+    0%, 100% { text-shadow: 0 0 10px rgba(255,255,255,0.55), 0 0 30px rgba(255,255,255,0.25); }
+    50%      { text-shadow: 0 0 14px rgba(255,255,255,0.75), 0 0 40px rgba(255,255,255,0.35); }
+  }
+
+  .sub {
+    font-size: 0.72rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+
+  .code-box {
+    position: relative;
+    width: min(760px, 92vw);
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.012));
+    border: 1px solid rgba(255,255,255,0.14);
+    border-radius: 10px;
+    padding: 22px 26px;
+    text-align: left;
+    overflow: hidden;
+    box-shadow:
+      0 20px 60px rgba(0,0,0,0.6),
+      0 0 40px rgba(255,255,255,0.03) inset;
+    transition: border-color 0.3s ease, box-shadow 0.4s ease;
+  }
+
+  .code-box:hover {
+    border-color: rgba(255,255,255,0.32);
+    box-shadow:
+      0 24px 80px rgba(0,0,0,0.7),
+      0 0 60px rgba(255,255,255,0.06) inset;
+  }
+
+  .code-box .label {
+    font-size: 0.62rem;
+    letter-spacing: 0.45em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+
+  .code {
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: #fff;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  .code .kw   { color: #c4b5fd; }
+  .code .str  { color: #86efac; }
+  .code .punc { color: rgba(255,255,255,0.7); }
+
+  .buttons {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 18px 40px;
+    background: rgba(255,255,255,0.02);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.32em;
+    text-transform: lowercase;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.55);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease,
+      box-shadow 0.35s ease,
+      transform 0.25s ease,
+      letter-spacing 0.35s ease;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #fff;
+    transform: translateX(-101%);
+    transition: transform 0.45s cubic-bezier(.65,.05,.36,1);
+    z-index: -1;
+  }
+
+  .btn:hover {
+    color: #000;
+    border-color: #fff;
+    letter-spacing: 0.4em;
+    transform: translateY(-2px);
+    box-shadow:
+      0 0 24px rgba(255,255,255,0.5),
+      0 0 60px rgba(255,255,255,0.22);
+  }
+  .btn:hover::before { transform: translateX(0); }
+
+  .btn.primary {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+  .btn.primary::before { background: #000; }
+  .btn.primary:hover   { color: #fff; }
+
+  .btn.ok {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+  }
+
+  .hint {
+    font-size: 0.68rem;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--dim);
+    animation: hintFade 3s ease-in-out infinite;
+  }
+  @keyframes hintFade {
+    0%, 100% { opacity: 0.55; }
+    50%      { opacity: 1; }
+  }
+</style>
 </head>
 <body>
 
+  <canvas id="stars"></canvas>
+  <div class="cursor-glow" id="glow"></div>
+
+  <div class="corner tl"></div>
+  <div class="corner tr"></div>
+  <div class="corner bl"></div>
+  <div class="corner br"></div>
+
   <div class="topbar">
-    <div class="brand">
+    <a class="brand" href="/">
       <span class="dot"></span>
-      getsols.xyz / loader
-    </div>
-    <div class="actions">
-      <button id="copyRaw">Copy raw</button>
-      <button id="copyLoader">Copy loader</button>
-      <button id="reload">Reload</button>
-    </div>
+      <span>getsols.xyz</span>
+      <span class="sep">/</span>
+      <span class="path"><b>loader</b></span>
+    </a>
   </div>
 
-  <div class="code-wrap">
-    <div class="meta">
-      <span id="fileInfo">script.lua</span>
-      <span class="right" id="status">loading…</span>
+  <main class="stage">
+    <h1 class="heading">loader</h1>
+    <p class="sub">run this in your executor</p>
+
+    <div class="code-box">
+      <div class="label">loadstring</div>
+      <div class="code" id="code"><span class="kw">loadstring</span><span class="punc">(</span><span class="punc">game</span><span class="punc">:</span><span class="kw">HttpGet</span><span class="punc">(</span><span class="str">"https://getsols.xyz/script.lua"</span><span class="punc">)</span><span class="punc">)</span><span class="punc">()</span></div>
     </div>
-    <pre id="codeBlock" style="display:none;"><code id="codeEl"></code></pre>
-    <div class="state" id="state"><span class="spinner"></span>fetching script.lua…</div>
-  </div>
 
-  <div class="footer">
-    view at <a href="/loader">getsols.xyz/loader</a> · raw at <a href="/script.lua">getsols.xyz/script.lua</a>
-  </div>
+    <div class="buttons">
+      <button class="btn primary" id="copyBtn">copy loader</button>
+      <a class="btn" href="https://getsols.xyz/script.lua" target="_blank" rel="noopener">show raw</a>
+    </div>
 
-  <script>
-    const codeBlock = document.getElementById('codeBlock');
-    const codeEl = document.getElementById('codeEl');
-    const stateEl = document.getElementById('state');
-    const statusEl = document.getElementById('status');
-    const fileInfoEl = document.getElementById('fileInfo');
-    let rawText = '';
+    <p class="hint">paste &amp; execute</p>
+  </main>
 
-    const url = '/script.lua?t=' + Date.now();
+<script>
+/* ---------- Copy the loader ---------- */
+const LOADER = 'loadstring(game:HttpGet("https://getsols.xyz/script.lua"))()';
+const btn = document.getElementById("copyBtn");
 
-    async function load() {
-      stateEl.style.display = 'block';
-      stateEl.classList.remove('error');
-      codeBlock.style.display = 'none';
-      statusEl.textContent = 'loading…';
+btn.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(LOADER);
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = LOADER;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  const original = btn.textContent;
+  btn.textContent = "copied ✓";
+  btn.classList.add("ok");
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.classList.remove("ok");
+  }, 1500);
+});
 
-      try {
-        const res = await fetch(url, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        rawText = await res.text();
+/* ---------- Cursor glow + starfield ---------- */
+const glow = document.getElementById("glow");
+const canvas = document.getElementById("stars");
+const ctx = canvas.getContext("2d");
+let W, H;
 
-        const lines = rawText.split('\n');
-        codeEl.innerHTML =
-          lines.map((ln, i) =>
-            `<span class="lines">${String(i + 1).padStart(3, ' ')}</span>${escapeHtml(ln)}`
-          ).join('\n') + '<span class="caret"></span>';
+function resize() {
+  W = canvas.width  = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener("resize", resize);
 
-        codeBlock.style.display = 'block';
-        stateEl.style.display = 'none';
-        statusEl.textContent = `${lines.length} lines · ${rawText.length} bytes`;
-        fileInfoEl.textContent = 'script.lua';
-      } catch (err) {
-        stateEl.classList.add('error');
-        stateEl.textContent = 'Failed to load script.lua — ' + err.message;
-        statusEl.textContent = 'error';
-      }
-    }
+const target = { x: 0, y: 0 };
+const current = { x: 0, y: 0 };
+const cursor = { x: W / 2, y: H / 2 };
+const cursorEased = { x: W / 2, y: H / 2 };
 
-    function escapeHtml(s) {
-      return s
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-    }
+window.addEventListener("mousemove", (e) => {
+  target.x = (e.clientX / W) * 2 - 1;
+  target.y = (e.clientY / H) * 2 - 1;
+  cursor.x = e.clientX;
+  cursor.y = e.clientY;
+});
+window.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
+window.addEventListener("mouseenter", () => { glow.style.opacity = "1"; });
 
-    document.getElementById('copyRaw').addEventListener('click', async e => {
-      try {
-        await navigator.clipboard.writeText(rawText);
-        flash(e.target, 'Copied!');
-      } catch { flash(e.target, 'Failed'); }
+const LAYERS = [
+  { count: 140, r: 0.5, speed: 0.005, parallax: 8  },
+  { count: 90,  r: 0.9, speed: 0.010, parallax: 20 },
+  { count: 45,  r: 1.4, speed: 0.018, parallax: 34 },
+];
+
+const layers = LAYERS.map((cfg) => {
+  const stars = [];
+  for (let i = 0; i < cfg.count; i++) {
+    stars.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: cfg.r * (0.7 + Math.random() * 0.6),
+      base: 0.3 + Math.random() * 0.5,
+      phase: Math.random() * Math.PI * 2,
+      speed: cfg.speed,
+      parallax: cfg.parallax,
     });
+  }
+  return stars;
+});
 
-    document.getElementById('copyLoader').addEventListener('click', async e => {
-      const loader = `-- getsols.xyz\n-- loadstring(game:HttpGet("https://getsols.xyz/script.lua"))()\n-- view: https://getsols.xyz/loader`;
-      try {
-        await navigator.clipboard.writeText(loader);
-        flash(e.target, 'Copied!');
-      } catch { flash(e.target, 'Failed'); }
-    });
+const meteors = [];
+function spawnMeteor() {
+  meteors.push({
+    x: Math.random() * W,
+    y: -20,
+    len: Math.random() * 100 + 80,
+    speed: Math.random() * 5 + 5,
+    angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+  });
+}
+setInterval(spawnMeteor, 1100);
 
-    function flash(btn, text) {
-      const orig = btn.textContent;
-      btn.textContent = text;
-      btn.classList.add('copied');
-      setTimeout(() => {
-        btn.textContent = orig;
-        btn.classList.remove('copied');
-      }, 1200);
+function draw() {
+  ctx.fillStyle = "rgba(0,0,0,0.35)";
+  ctx.fillRect(0, 0, W, H);
+
+  current.x += (target.x - current.x) * 0.05;
+  current.y += (target.y - current.y) * 0.05;
+  cursorEased.x += (cursor.x - cursorEased.x) * 0.18;
+  cursorEased.y += (cursor.y - cursorEased.y) * 0.18;
+
+  glow.style.transform = `translate(${cursorEased.x}px, ${cursorEased.y}px) translate(-50%, -50%)`;
+
+  for (const stars of layers) {
+    for (const s of stars) {
+      s.phase += s.speed;
+      const a = s.base + Math.sin(s.phase) * 0.35;
+      const px = s.x - current.x * s.parallax;
+      const py = s.y - current.y * s.parallax;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(255,255,255,${Math.max(0, Math.min(1, a))})`;
+      ctx.arc(px, py, s.r, 0, Math.PI * 2);
+      ctx.fill();
     }
+  }
 
-    document.getElementById('reload').addEventListener('click', load);
+  for (let i = meteors.length - 1; i >= 0; i--) {
+    const m = meteors[i];
+    m.x += Math.cos(m.angle) * m.speed;
+    m.y += Math.sin(m.angle) * m.speed;
+    const tailX = m.x - Math.cos(m.angle) * m.len;
+    const tailY = m.y - Math.sin(m.angle) * m.len;
+    const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+    grad.addColorStop(0, "rgba(255,255,255,1)");
+    grad.addColorStop(0.35, "rgba(255,255,255,0.5)");
+    grad.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 1.8;
+    ctx.shadowColor = "rgba(255,255,255,0.9)";
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.moveTo(m.x, m.y);
+    ctx.lineTo(tailX, tailY);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.fillStyle = "rgba(255,255,255,1)";
+    ctx.arc(m.x, m.y, 1.6, 0, Math.PI * 2);
+    ctx.fill();
+    if (m.y > H + 100 || m.x > W + 100 || m.x < -100) meteors.splice(i, 1);
+  }
 
-    load();
-  </script>
+  requestAnimationFrame(draw);
+}
+draw();
+</script>
 </body>
 </html>
