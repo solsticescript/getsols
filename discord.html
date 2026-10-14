@@ -110,6 +110,7 @@
     text-transform: uppercase; color: var(--dim);
   }
 
+  /* ---------- Discord button ---------- */
   .discord-btn {
     display: inline-flex; align-items: center; gap: 14px;
     padding: 20px 46px;
@@ -132,10 +133,12 @@
   }
   .discord-btn svg { width: 22px; height: 22px; }
 
+  /* ---------- Music player ---------- */
   .music {
     width: min(640px, 92vw);
     display: flex; flex-direction: column; gap: 14px; align-items: stretch;
   }
+
   .now-playing {
     display: flex; align-items: center; gap: 12px;
     font-size: 0.7rem; letter-spacing: 0.35em;
@@ -156,6 +159,32 @@
     0%, 100% { height: 4px;  opacity: 0.6; }
     50%      { height: 12px; opacity: 1; }
   }
+  .now-playing .track {
+    color: #fff;
+  }
+
+  /* custom play/pause button */
+  .play-btn {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 14px 32px;
+    background: rgba(255,255,255,0.03);
+    color: #fff;
+    font-family: inherit; font-size: 0.78rem; font-weight: 500;
+    letter-spacing: 0.32em; text-transform: lowercase;
+    border: 1px solid rgba(255,255,255,0.45);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    align-self: center;
+  }
+  .play-btn:hover {
+    background: #fff;
+    color: #000;
+    border-color: #fff;
+    letter-spacing: 0.38em;
+    box-shadow: 0 0 30px rgba(255,255,255,0.5);
+  }
+  .play-btn svg { width: 14px; height: 14px; }
 
   .hint {
     font-size: 0.68rem; letter-spacing: 0.5em;
@@ -166,24 +195,6 @@
     0%, 100% { opacity: 0.55; }
     50%      { opacity: 1; }
   }
-
-  .unmute-toast {
-    position: fixed; bottom: 26px; left: 50%;
-    transform: translateX(-50%);
-    padding: 11px 22px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.22);
-    border-radius: 999px;
-    font-size: 0.68rem; letter-spacing: 0.32em;
-    text-transform: uppercase; color: #fff;
-    z-index: 9;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.4s ease;
-    white-space: nowrap;
-  }
-  .unmute-toast.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -219,46 +230,73 @@
     <div class="music">
       <div class="now-playing">
         <span class="bar"><i></i><i></i><i></i><i></i></span>
-        now playing · the love i lost
+        <span>now playing · <span class="track">the love i lost</span></span>
       </div>
+
+      <button class="play-btn" id="playBtn">
+        <svg id="icon" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M4 2l10 6-10 6V2z"/>
+        </svg>
+        <span id="label">play music</span>
+      </button>
     </div>
 
-    <p class="hint">click to enter</p>
+    <p class="hint">click to join</p>
   </main>
 
-  <div class="unmute-toast" id="toast">click anywhere to enable sound</div>
-
 <script>
-/* ---------- MP3 autoplay (muted → unmute on first gesture) ---------- */
-const audio = new Audio("/the-love-i-lost.mp3");
+/* ---------- Music ---------- */
+const audio = new Audio("/the-love-i-lost-here.mp3");
 audio.loop   = true;
-audio.muted  = true;
 audio.volume = 0.55;
 
-audio.play().catch(() => { /* silently ignore — will retry on gesture */ });
+const playBtn = document.getElementById("playBtn");
+const icon    = document.getElementById("icon");
+const label   = document.getElementById("label");
 
-const toast = document.getElementById("toast");
-let unmuted = false;
+const PLAY_PATH  = "M4 2l10 6-10 6V2z";
+const PAUSE_PATH = "M3 2h4v12H3zM9 2h4v12H9z";
 
-function enableSound() {
-  if (unmuted) return;
-  unmuted = true;
-  audio.muted = false;
-  audio.play().catch(() => {});
-  toast.classList.remove("show");
-  window.removeEventListener("click", enableSound);
-  window.removeEventListener("keydown", enableSound);
-  window.removeEventListener("touchstart", enableSound);
-  window.removeEventListener("scroll", enableSound);
+function setPlaying(isPlaying) {
+  icon.querySelector("path").setAttribute("d", isPlaying ? PAUSE_PATH : PLAY_PATH);
+  label.textContent = isPlaying ? "pause" : "play music";
 }
 
-/* show the toast if browser is still muting us after ~700ms */
-setTimeout(() => { if (audio.muted) toast.classList.add("show"); }, 700);
+/* try autoplay (muted first so browsers allow it) */
+audio.muted = true;
+audio.play().then(() => {
+  setPlaying(true);
+  /* unmute on first user gesture */
+  const unmute = () => {
+    audio.muted = false;
+    audio.volume = 0.55;
+    window.removeEventListener("click", unmute);
+    window.removeEventListener("keydown", unmute);
+    window.removeEventListener("touchstart", unmute);
+    window.removeEventListener("scroll", unmute);
+  };
+  window.addEventListener("click", unmute, { once: true });
+  window.addEventListener("keydown", unmute, { once: true });
+  window.addEventListener("touchstart", unmute, { once: true });
+  window.addEventListener("scroll", unmute, { once: true });
+}).catch(() => {
+  /* autoplay blocked — user will click the play button */
+  setPlaying(false);
+});
 
-window.addEventListener("click",      enableSound, { once: true });
-window.addEventListener("keydown",    enableSound, { once: true });
-window.addEventListener("touchstart", enableSound, { once: true });
-window.addEventListener("scroll",     enableSound, { once: true });
+playBtn.addEventListener("click", () => {
+  if (audio.paused) {
+    audio.muted = false;
+    audio.play().then(() => setPlaying(true)).catch(() => setPlaying(false));
+  } else {
+    audio.pause();
+    setPlaying(false);
+  }
+});
+
+/* keep icon in sync if user pauses from OS media controls */
+audio.addEventListener("play",  () => setPlaying(true));
+audio.addEventListener("pause", () => setPlaying(false));
 
 /* ---------- Cursor glow + starfield ---------- */
 const glow   = document.getElementById("glow");
@@ -273,7 +311,7 @@ function resize() {
 resize();
 window.addEventListener("resize", resize);
 
-const target = { x: 0, y: 0 };
+const target  = { x: 0, y: 0 };
 const current = { x: 0, y: 0 };
 const cursor  = { x: W / 2, y: H / 2 };
 const cursorEased = { x: W / 2, y: H / 2 };
