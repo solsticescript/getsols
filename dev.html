@@ -157,7 +157,6 @@
     color: var(--dim);
   }
 
-  /* letter-by-letter hero animation */
   .hero h1 .ltr {
     display: inline-block;
     opacity: 0;
@@ -413,100 +412,6 @@
     100% { transform: scale(1);    filter: blur(0); opacity: 1; }
   }
 
-  .ex-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .ex-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 14px;
-    background: rgba(0,0,0,0.35);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 8px;
-    font-size: 0.78rem;
-    transition: all 0.3s cubic-bezier(.16,1,.3,1);
-    text-decoration: none;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-  .ex-row.revealed {
-    animation: exIn 0.7s cubic-bezier(.16,1,.3,1) forwards;
-    animation-delay: var(--ex-delay, 0ms);
-  }
-  @keyframes exIn {
-    from { opacity: 0; transform: translateX(-20px); filter: blur(4px); }
-    to   { opacity: 1; transform: translateX(0);    filter: blur(0); }
-  }
-  .ex-row::before {
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    background: #fff;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 0.35s ease;
-    box-shadow: 0 0 10px #fff;
-  }
-  .ex-row::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(255,255,255,0.06), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.5s ease;
-    pointer-events: none;
-  }
-  .ex-row:hover {
-    border-color: rgba(255,255,255,0.35);
-    background: rgba(255,255,255,0.04);
-    transform: translateX(6px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  }
-  .ex-row:hover::before { transform: scaleY(1); }
-  .ex-row:hover::after  { transform: translateX(0); }
-
-  .ex-status {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    box-shadow: 0 0 8px currentColor;
-    animation: statusPulse 2s ease-in-out infinite;
-  }
-  @keyframes statusPulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50%      { transform: scale(0.7); opacity: 0.6; }
-  }
-  .ex-status.on  { background: var(--ok);   color: var(--ok); }
-  .ex-status.unk { background: var(--warn); color: var(--warn); }
-  .ex-status.pc  { background: var(--accent); color: var(--accent); }
-  .ex-name { flex: 1; letter-spacing: 0.05em; transition: transform 0.3s ease; }
-  .ex-row:hover .ex-name { transform: translateX(2px); letter-spacing: 0.08em; }
-  .ex-tag {
-    font-size: 0.55rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 3px 8px;
-    border: 1px solid rgba(255,255,255,0.18);
-    border-radius: 4px;
-    color: rgba(255,255,255,0.5);
-    transition: all 0.3s ease;
-  }
-  .ex-row:hover .ex-tag {
-    border-color: rgba(255,255,255,0.4);
-    color: #fff;
-  }
-  .ex-tag.pc {
-    color: var(--accent);
-    border-color: rgba(196,181,253,0.35);
-  }
-
   .toast {
     position: fixed;
     bottom: 30px;
@@ -612,50 +517,6 @@
         <div class="out" id="obf-out"></div>
       </div>
 
-      <div class="tool wide">
-        <div class="tool-head">
-          <div class="tool-title">executor status</div>
-        </div>
-        <div class="tool-sub">common roblox executors and their platforms. click any for a download.</div>
-        <div class="ex-list">
-          <a class="ex-row" href="https://github.com/QuartzIsHere/Solara" target="_blank" rel="noopener">
-            <span class="ex-status on"></span>
-            <span class="ex-name">Solara</span>
-            <span class="ex-tag pc">pc</span>
-          </a>
-          <a class="ex-row" href="https://github.com/QuartzIsHere/Wave" target="_blank" rel="noopener">
-            <span class="ex-status on"></span>
-            <span class="ex-name">Wave</span>
-            <span class="ex-tag pc">pc</span>
-          </a>
-          <a class="ex-row" href="https://x.synapse.to/" target="_blank" rel="noopener">
-            <span class="ex-status unk"></span>
-            <span class="ex-name">Synapse X</span>
-            <span class="ex-tag pc">pc</span>
-          </a>
-          <a class="ex-row" href="https://script-ware.com/" target="_blank" rel="noopener">
-            <span class="ex-status unk"></span>
-            <span class="ex-name">Script-Ware</span>
-            <span class="ex-tag pc">pc</span>
-          </a>
-          <a class="ex-row" href="https://krnl.place/" target="_blank" rel="noopener">
-            <span class="ex-status unk"></span>
-            <span class="ex-name">Krnl</span>
-            <span class="ex-tag pc">pc</span>
-          </a>
-          <a class="ex-row" href="https://fluxus.pro/" target="_blank" rel="noopener">
-            <span class="ex-status unk"></span>
-            <span class="ex-name">Fluxus</span>
-            <span class="ex-tag">android</span>
-          </a>
-          <a class="ex-row" href="https://deltaexploits.com/" target="_blank" rel="noopener">
-            <span class="ex-status unk"></span>
-            <span class="ex-name">Delta</span>
-            <span class="ex-tag">android</span>
-          </a>
-        </div>
-      </div>
-
     </div>
 
   </main>
@@ -683,7 +544,6 @@ async function copyText(text) {
   }
 }
 
-/* ===== HERO LETTER ANIMATION ===== */
 (function () {
   const el = document.getElementById("hero-title");
   const text = el.textContent;
@@ -697,7 +557,6 @@ async function copyText(text) {
   });
 })();
 
-/* ===== LOADSTRING BUILDER ===== */
 const lsUrl = document.getElementById("ls-url");
 const lsOut = document.getElementById("ls-out");
 let currentLS = "";
@@ -716,7 +575,6 @@ document.getElementById("ls-copy").addEventListener("click", async () => {
   showToast("loadstring copied");
 });
 
-/* ===== LUA BEAUTIFIER ===== */
 const bfIn = document.getElementById("bf-in");
 const bfOut = document.getElementById("bf-out");
 let bfResult = "";
@@ -770,7 +628,6 @@ document.getElementById("bf-copy").addEventListener("click", async () => {
   showToast("copied");
 });
 
-/* ===== OBFUSCATOR ===== */
 const obfIn = document.getElementById("obf-in");
 const obfOut = document.getElementById("obf-out");
 let obfResult = "";
@@ -796,7 +653,6 @@ document.getElementById("obf-copy").addEventListener("click", async () => {
   showToast("copied");
 });
 
-/* ===== SCROLL REVEAL ===== */
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -811,12 +667,6 @@ document.querySelectorAll(".tool").forEach((el, i) => {
   revealObserver.observe(el);
 });
 
-document.querySelectorAll(".ex-row").forEach((el, i) => {
-  el.style.setProperty("--ex-delay", (i * 60) + "ms");
-  revealObserver.observe(el);
-});
-
-/* ===== SCROLL PROGRESS ===== */
 const progress = document.getElementById("progress");
 window.addEventListener("scroll", () => {
   const h = document.documentElement;
@@ -824,7 +674,6 @@ window.addEventListener("scroll", () => {
   progress.style.setProperty("--progress", Math.min(100, Math.max(0, scrolled)) + "%");
 }, { passive: true });
 
-/* ===== MOTION BLUR on fast scroll ===== */
 let lastScroll = window.scrollY;
 let scrollVelocity = 0;
 const wrapEl = document.querySelector(".wrap");
@@ -833,11 +682,8 @@ window.addEventListener("scroll", () => {
   scrollVelocity = Math.abs(y - lastScroll);
   lastScroll = y;
   const blur = Math.min(scrollVelocity * 0.06, 3.5);
-  if (blur > 0.15) {
-    wrapEl.style.filter = `blur(${blur}px)`;
-  } else {
-    wrapEl.style.filter = "";
-  }
+  if (blur > 0.15) wrapEl.style.filter = `blur(${blur}px)`;
+  else wrapEl.style.filter = "";
 }, { passive: true });
 
 setInterval(() => {
@@ -850,7 +696,6 @@ setInterval(() => {
   }
 }, 50);
 
-/* ===== SPOTLIGHT on tools ===== */
 document.querySelectorAll(".tool").forEach(tool => {
   tool.addEventListener("mousemove", (e) => {
     const rect = tool.getBoundingClientRect();
@@ -861,7 +706,6 @@ document.querySelectorAll(".tool").forEach(tool => {
   });
 });
 
-/* ===== MAGNETIC BUTTONS ===== */
 document.querySelectorAll(".btn").forEach(btn => {
   btn.addEventListener("mousemove", (e) => {
     const rect = btn.getBoundingClientRect();
@@ -872,7 +716,6 @@ document.querySelectorAll(".btn").forEach(btn => {
   btn.addEventListener("mouseleave", () => { btn.style.transform = ""; });
 });
 
-/* ===== CLICK RIPPLES + PARTICLES ===== */
 const fx     = document.getElementById("fx");
 const fxCtx  = fx.getContext("2d");
 let fxW, fxH;
@@ -904,7 +747,6 @@ document.addEventListener("click", (e) => {
 
 function drawFX() {
   fxCtx.clearRect(0, 0, fxW, fxH);
-
   for (let i = ripples.length - 1; i >= 0; i--) {
     const r = ripples[i];
     r.r += (r.max - r.r) * 0.12;
@@ -916,14 +758,11 @@ function drawFX() {
     fxCtx.lineWidth = 1.3;
     fxCtx.stroke();
   }
-
   for (let i = sparks.length - 1; i >= 0; i--) {
     const s = sparks[i];
-    s.x += s.vx;
-    s.y += s.vy;
+    s.x += s.vx; s.y += s.vy;
     s.vy += 0.08;
-    s.vx *= 0.98;
-    s.vy *= 0.98;
+    s.vx *= 0.98; s.vy *= 0.98;
     s.life -= 0.025;
     if (s.life <= 0) { sparks.splice(i, 1); continue; }
     fxCtx.beginPath();
@@ -934,12 +773,10 @@ function drawFX() {
     fxCtx.fill();
     fxCtx.shadowBlur = 0;
   }
-
   requestAnimationFrame(drawFX);
 }
 drawFX();
 
-/* ===== CURSOR GLOW + STARFIELD ===== */
 const glow   = document.getElementById("glow");
 const canvas = document.getElementById("stars");
 const ctx    = canvas.getContext("2d");
@@ -963,7 +800,7 @@ window.addEventListener("mousemove", (e) => {
   cursor.y = e.clientY;
 });
 document.addEventListener("mouseover", (e) => {
-  if (e.target.closest(".tool, .ex-row, .btn")) glow.classList.add("big");
+  if (e.target.closest(".tool, .btn")) glow.classList.add("big");
   else glow.classList.remove("big");
 });
 window.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
