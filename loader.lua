@@ -8,3 +8,4 @@ if not result or not result.Body or (result.StatusCode and (result.StatusCode < 
 local chunk, err = loadstring(result.Body)
 if not chunk then error(err) end
 return chunk()
+-- no stealing cuh
