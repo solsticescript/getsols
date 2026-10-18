@@ -125,6 +125,24 @@
   #notice { min-height: 1.2em; font-size: 0.85rem; color: var(--accent); margin-top: 1rem; font-family: var(--font-mono); }
   #notice.err { color: var(--danger); }
 
+  /* Footer Note */
+  .footer-note {
+    text-align: center;
+    margin-top: 3rem;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .footer-note a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .footer-note a:hover {
+    color: var(--text);
+  }
+
   @media (max-width: 600px) {
     nav ul { display: none; }
     .grid { grid-template-columns: 1fr; }
@@ -168,6 +186,10 @@
     <p id="notice" role="status"></p>
     <button id="checkout" class="ghost" disabled style="margin-top: 1rem; width: auto; padding-left: 2rem; padding-right: 2rem;">Proceed to Checkout</button>
   </section>
+
+  <footer class="footer-note">
+    Interested in anything else? make a ticket at <a href="https://discord.gg/fYjYdsT3k" target="_blank" rel="noopener">https://discord.gg/fYjYdsT3k</a>.
+  </footer>
 </main>
 
 <script>
