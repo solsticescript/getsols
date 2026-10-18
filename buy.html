@@ -24,7 +24,7 @@
       color: #ffffff;
       line-height: 1.5;
       min-height: 100vh;
-      padding: 2rem 1rem;
+      padding: 2rem 1rem 120px 1rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,28 +99,16 @@
       border-radius: 1rem;
       padding: 1.5rem;
       border: 1px solid #333;
-      transition: border-color 0.2s;
       margin-bottom: 2rem;
-    }
-
-    .sols-card:hover {
-      border-color: #666;
     }
 
     .sols-header {
       display: flex;
       align-items: center;
       gap: 1rem;
-      cursor: pointer;
-      padding: 0.5rem;
-      border-radius: 0.5rem;
-      transition: background 0.2s;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .sols-header:hover {
-      background: #111;
+      padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+      border-bottom: 1px solid #222;
+      margin-bottom: 1.5rem;
     }
 
     .lua-logo {
@@ -203,30 +191,6 @@
       font-weight: 500;
     }
 
-    .expand-hint {
-      margin-left: auto;
-      color: #ffffff;
-      font-size: 1.5rem;
-      transition: transform 0.3s;
-      pointer-events: none;
-    }
-
-    .sols-header.active .expand-hint {
-      transform: rotate(180deg);
-    }
-
-    .pricing-panel {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease-out, margin 0.3s;
-      margin-top: 0;
-    }
-
-    .pricing-panel.open {
-      max-height: 2000px;
-      margin-top: 1.5rem;
-    }
-
     .pricing-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -255,28 +219,21 @@
       padding: 1.5rem 1rem;
       text-align: center;
       border: 1px solid #333;
-      transition: border-color 0.2s, transform 0.1s;
+      transition: border-color 0.2s;
       display: flex;
       flex-direction: column;
       align-items: center;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+      position: relative;
     }
 
     .price-option:hover {
       border-color: #ffffff;
-      transform: scale(1.02);
-    }
-
-    .price-option:active {
-      transform: scale(0.98);
     }
 
     .price-option i {
       font-size: 1.5rem;
       margin-bottom: 0.8rem;
       color: #ffffff;
-      pointer-events: none;
     }
 
     .price-option h3 {
@@ -286,7 +243,6 @@
       color: #ffffff;
       margin-bottom: 0.2rem;
       letter-spacing: 0.05em;
-      pointer-events: none;
     }
 
     .price-tag {
@@ -300,7 +256,6 @@
       align-items: baseline;
       justify-content: center;
       gap: 0.1rem;
-      pointer-events: none;
     }
 
     .price-tag small {
@@ -323,15 +278,37 @@
       color: #aaaaaa;
       border: 1px solid #444;
       margin-bottom: 0.5rem;
-      pointer-events: none;
     }
 
-    .tap-hint {
+    .stock-badge {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.65rem;
-      color: #666;
-      margin-top: 0.5rem;
-      pointer-events: none;
+      font-size: 0.7rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .stock-badge span {
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .add-to-cart-btn {
+      background: #ffffff;
+      border: 1px solid #ffffff;
+      color: #000000;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #dddddd;
+      border-color: #dddddd;
     }
 
     .loader-section {
@@ -402,7 +379,7 @@
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
-      z-index: 1000;
+      z-index: 2000;
     }
 
     .modal-overlay.active {
@@ -801,6 +778,94 @@
       display: inline-block;
     }
 
+    .sticky-cart {
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 2rem);
+      max-width: 800px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 500;
+    }
+
+    .sticky-cart.active {
+      bottom: 1.5rem;
+    }
+
+    .cart-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-icon-wrapper {
+      position: relative;
+      font-size: 1.5rem;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background: #fff;
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cart-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-total-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+    }
+
+    .cart-total-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .checkout-btn {
+      background: #fff;
+      border: 1px solid #fff;
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      border-radius: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkout-btn:hover {
+      background: #ddd;
+      border-color: #ddd;
+    }
+
     .cart-toast {
       background: #111111;
       border-left: 3px solid #ffffff;
@@ -837,7 +902,7 @@
 
     @media (max-width: 500px) {
       body {
-        padding: 1.5rem 0.8rem;
+        padding: 1.5rem 0.8rem 120px 0.8rem;
       }
       .hero h1 {
         font-size: 1.6rem;
@@ -845,14 +910,21 @@
       .sols-card {
         padding: 1rem;
       }
-      .pricing-panel.open {
-        max-height: 2000px;
-      }
       .crypto-options {
         grid-template-columns: 1fr;
       }
       .top-bar {
         justify-content: center;
+      }
+      .sticky-cart {
+        padding: 0.8rem 1rem;
+      }
+      .cart-total-price {
+        font-size: 1rem;
+      }
+      .checkout-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -863,45 +935,4 @@
       <a href="https://discord.gg/ZjzktnrhBD" target="_blank" class="dc-btn">
         <i class="fab fa-discord"></i> join discord
       </a>
-    </div>
-
-    <div class="hero">
-      <h1>sols.xyz</h1>
-      <p>click the lua logo below to view licensing options.</p>
-    </div>
-
-    <div class="sols-card">
-      <div class="sols-header" id="solsHeader">
-        <div class="lua-logo">
-          <div class="lua-moon"></div>
-          <div class="lua-star">★</div>
-          <div class="lua-text">lua</div>
-        </div>
-        <div class="sols-title">
-          <h2>sols.xyz keys</h2>
-          <span>premium script access</span>
-        </div>
-        <i class="fas fa-chevron-down expand-hint" id="expandHint"></i>
-      </div>
-
-      <div class="pricing-panel" id="pricingPanel">
-        <div class="pricing-grid">
-          <div class="price-option" onclick="openPaymentModal('Lifetime', '10')">
-            <i class="fas fa-infinity"></i>
-            <h3>lifetime</h3>
-            <div class="price-tag">$10 <small>once</small></div>
-            <div class="license-badge">forever</div>
-            <div class="tap-hint">select</div>
-          </div>
-          <div class="price-option" onclick="openPaymentModal('Monthly', '6')">
-            <i class="fas fa-calendar-alt"></i>
-            <h3>monthly</h3>
-            <div class="price-tag">$6 <small>/mo</small></div>
-            <div class="license-badge">30 days</div>
-            <div class="tap-hint">select</div>
-          </div>
-          <div class="price-option" onclick="openPaymentModal('Weekly', '4')">
-            <i class="fas fa-calendar-week"></i>
-            <h3>weekly</h3>
-            <div class="price-tag">$4 <small>
-              
+   
