@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market — getsols</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050505;
+    --panel: rgba(20, 20, 22, 0.7);
+    --text: #ededed;
+    --muted: #888888;
+    --accent: #4ade80;
+    --accent-dim: rgba(74, 222, 128, 0.15);
+    --border: rgba(255, 255, 255, 0.08);
+    --border-hover: rgba(255, 255, 255, 0.2);
+    --danger: #ef4444;
+    --max: 1100px;
+    --font-sans: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    background-image: 
+      radial-gradient(circle at 15% 50%, rgba(74, 222, 128, 0.04), transparent 25%),
+      radial-gradient(circle at 85% 30%, rgba(74, 222, 128, 0.04), transparent 25%),
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
+    color: var(--text);
+    min-height: 100vh;
+  }
+  a { color: var(--text); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--accent); }
+
+  /* Header */
+  header {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(5, 5, 5, 0.7);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav {
+    max-width: var(--max); margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem;
+  }
+  .brand { font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.5px; }
+  .brand span { color: var(--accent); }
+  nav ul { display: flex; gap: 2rem; list-style: none; margin: 0; padding: 0; font-size: 0.9rem; font-weight: 500; }
+  nav ul a { color: var(--muted); }
+  nav ul a:hover { color: var(--text); }
+  .cart-pill {
+    background: var(--accent-dim); color: var(--accent);
+    padding: 0.2rem 0.6rem; border-radius: 99px;
+    font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700;
+  }
+
+  /* Main Content */
+  main { max-width: var(--max); margin: 0 auto; padding: 3rem 1.5rem; }
+  .page-header { margin-bottom: 2.5rem; }
+  h1 { font-size: 2rem; font-weight: 600; margin: 0 0 0.5rem 0; letter-spacing: -0.5px; }
+  .subtitle { color: var(--muted); font-size: 1rem; margin: 0; }
+
+  /* Grid */
+  .grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  
+  /* Cards */
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex; flex-direction: column;
+    transition: all 0.2s ease;
+    position: relative; overflow: hidden;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-hover);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+  }
+  .card h2 { margin: 0 0 0.5rem; font-size: 1.1rem; font-weight: 600; }
+  .card .desc { margin: 0 0 1rem; color: var(--muted); font-size: 0.85rem; line-height: 1.5; flex-grow: 1; }
+  
+  .meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .price { font-family: var(--font-mono); font-size: 1.2rem; font-weight: 700; color: var(--accent); }
+  .stock { font-family: var(--font-mono); font-size: 0.75rem; padding: 0.25rem 0.5rem; border-radius: 4px; background: rgba(255,255,255,0.05); }
+  .stock.zero { color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+
+  button {
+    font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; border: none; border-radius: 8px; padding: 0.8rem 1rem;
+    background: var(--text); color: var(--bg);
+    transition: all 0.2s;
+    width: 100%;
+  }
+  button:hover:not(:disabled) { background: var(--accent); transform: translateY(-1px); }
+  button:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  
+  button.ghost { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  button.ghost:hover:not(:disabled) { border-color: var(--text); background: rgba(255,255,255,0.05); transform: none; }
+
+  /* Cart Section */
+  #cart {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.5rem; margin-top: 4rem; backdrop-filter: blur(10px);
+  }
+  #cart h2 { margin: 0 0 1.5rem; font-size: 1rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+  th, td { text-align: left; padding: 1rem 0.5rem; border-bottom: 1px solid var(--border); }
+  th { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  td.num, th.num { text-align: right; font-family: var(--font-mono); }
+  
+  .total-row { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: 1.1rem; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  .total-row .amount { font-family: var(--font-mono); color: var(--accent); font-size: 1.3rem; }
+  
+  #notice { min-height: 1.2em; font-size: 0.85rem; color: var(--accent); margin-top: 1rem; font-family: var(--font-mono); }
+  #notice.err { color: var(--danger); }
+
+  @media (max-width: 600px) {
+    nav ul { display: none; }
+    .grid { grid-template-columns: 1fr; }
+    th, td { font-size: 0.85rem; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <nav>
+    <span class="brand">getsols<span>/</span>market</span>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="#cart">Cart <span class="cart-pill" id="cart-count">0</span></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <div class="page-header">
+    <h1>Available Stock</h1>
+    <p class="subtitle">Secure your items below. Inventory is updated in real-time.</p>
+  </div>
+  
+  <div class="grid" id="catalog" aria-live="polite">
+    <!-- Products inject here -->
+  </div>
+
+  <section id="cart">
+    <h2>Order Summary</h2>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Price</th><th>Qty</th><th class="num">Subtotal</th><th></th></tr>
+      </thead>
+      <tbody id="cart-body"></tbody>
+    </table>
+    <div class="total-row">
+      <span>Total</span>
+      <span class="amount" id="cart-total">—</span>
+    </div>
+    <p id="notice" role="status"></p>
+    <button id="checkout" class="ghost" disabled style="margin-top: 1rem; width: auto; padding-left: 2rem; padding-right: 2rem;">Proceed to Checkout</button>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  let catalog = [];
+  let cart = {};
+  let currency = 'USD';
+
+  const money = (n) => new Intl.NumberFormat(undefined,{style:'currency',currency}).format(n);
+  const findItem = (id) => catalog.find(i => i.id === id);
+
+  function renderCatalog(){
+    const wrap = $('catalog');
+    wrap.replaceChildren();
+    
+    if (catalog.length === 0) {
+      wrap.innerHTML = '<p style="color:var(--muted)">No stock available right now.</p>';
+      return;
+    }
+
+    for(const item of catalog){
+      const card = document.createElement('div');
+      card.className = 'card';
+      
+      const stockClass = item.stock === 0 ? 'stock zero' : 'stock';
+      const stockText = item.stock > 0 ? `${item.stock} in stock` : 'Out of stock';
+      const btnText = item.stock > 0 ? 'Add to cart' : 'Unavailable';
+      
+      card.innerHTML = `
+        <h2>${item.name}</h2>
+        <p class="desc">${item.desc}</p>
+        <div class="meta">
+          <span class="price">${money(item.price)}</span>
+          <span class="${stockClass}">${stockText}</span>
+        </div>
+        <button ${item.stock===0?'disabled':''}>${btnText}</button>`;
+        
+      card.querySelector('button').addEventListener('click', () => addToCart(item.id));
+      wrap.append(card);
+    }
+  }
+
+  function addToCart(id){
+    const item = findItem(id);
+    if(!item) return;
+    const current = cart[id] || 0;
+    if(current >= item.stock){ notice(`Limit reached: only ${item.stock} available.`, true); return; }
+    cart[id] = current + 1;
+    notice(`${item.name} added to cart.`);
+    renderCart();
+  }
+
+  function renderCart(){
+    const body = $('cart-body');
+    body.replaceChildren();
+    let total = 0, count = 0;
+    
+    for(const [id, qty] of Object.entries(cart)){
+      const item = findItem(id);
+      const sub = item.price * qty;
+      total += sub; count += qty;
+      
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td class="num">${money(item.price)}</td>
+        <td>${qty}</td>
+        <td class="num">${money(sub)}</td>
+        <td class="num"><button type="button" class="ghost" data-act="rm" style="padding: 0.3rem 0.6rem; width: auto; font-size: 0.8rem;">Remove</button></td>`;
+      tr.querySelector('[data-act="rm"]').addEventListener('click', () => { delete cart[id]; renderCart(); });
+      body.append(tr);
+    }
+    
+    if(count === 0){
+      body.innerHTML = '<tr><td colspan="5" style="color:var(--muted); text-align:center; padding: 2rem 0;">Your cart is empty.</td></tr>';
+    }
+    
+    $('cart-total').textContent = count ? money(total) : '—';
+    $('cart-count').textContent = count;
+    $('checkout').disabled = count === 0;
+  }
+
+  let noticeTimer;
+  function notice(msg, isErr){
+    const n = $('notice');
+    n.textContent = msg; n.className = isErr ? 'err' : '';
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => { n.textContent=''; n.className=''; }, 4000);
+  }
+
+  $('checkout').addEventListener('click', () => {
+    notice('Checkout is not wired to a payment processor yet.');
+  });
+
+  fetch('/products.json')
+    .then(r => { if(!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
+    .then(data => {
+      currency = data.currency || 'USD';
+      catalog = data.items || [];
+      renderCatalog();
+      renderCart();
+    })
+    .catch(err => {
+      notice(`Could not load products.json (${err.message}). Check the file path.`, true);
+    });
+})();
+</script>
+</body>
+</html>
