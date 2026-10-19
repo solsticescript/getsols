@@ -235,6 +235,14 @@
       letter-spacing: 0.05em;
     }
 
+    .sale-tag {
+      color: #ff3333;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      margin-left: 0.3rem;
+    }
+
     .price-tag {
       font-family: 'JetBrains Mono', monospace;
       font-size: 2rem;
@@ -997,11 +1005,11 @@
       <div class="pricing-grid">
         <div class="price-option">
           <i class="fas fa-infinity"></i>
-          <h3>lifetime</h3>
-          <div class="price-tag">$10 <small>once</small></div>
+          <h3>lifetime <span class="sale-tag">(SALE)</span></h3>
+          <div class="price-tag">$8 <small>once</small></div>
           <div class="license-badge">forever</div>
           <div class="stock-badge">stock: <span id="stock-lifetime">10</span></div>
-          <button class="add-to-cart-btn" onclick="addToCart('Lifetime', 10)">add to cart</button>
+          <button class="add-to-cart-btn" onclick="addToCart('Lifetime', 8)">add to cart</button>
         </div>
         <div class="price-option">
           <i class="fas fa-calendar-alt"></i>
