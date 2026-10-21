@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sols.xyz keys</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #000000;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: #ffffff;
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 2rem 1rem 120px 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 1rem;
+    }
+
+    .dc-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 0.6rem 1rem;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .dc-btn:hover {
+      background: #5865f2;
+      border-color: #5865f2;
+      color: #fff;
+    }
+
+    .dc-btn i {
+      font-size: 1.1rem;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: #aaaaaa;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .sols-card {
+      background: #0a0a0a;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      border: 1px solid #333;
+      margin-bottom: 2rem;
+    }
+
+    .sols-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+      border-bottom: 1px solid #222;
+      margin-bottom: 1.5rem;
+    }
+
+    .lua-logo {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.5rem;
+      background: #111;
+      border: 1px solid #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+
+    .lua-logo .lua-moon {
+      position: absolute;
+      width: 2rem;
+      height: 2rem;
+      background: #ffffff;
+      border-radius: 50%;
+      left: 0.5rem;
+      top: 0.7rem;
+    }
+
+    .lua-logo .lua-moon::after {
+      content: '';
+      position: absolute;
+      width: 1.7rem;
+      height: 1.7rem;
+      background: #111;
+      border-radius: 50%;
+      left: 0.8rem;
+      top: -0.2rem;
+    }
+
+    .lua-logo .lua-star {
+      position: absolute;
+      color: #ffffff;
+      font-size: 0.9rem;
+      right: 0.5rem;
+      top: 0.5rem;
+      z-index: 2;
+      line-height: 1;
+    }
+
+    .lua-logo .lua-text {
+      position: absolute;
+      bottom: 0.1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.45rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: #ffffff;
+      z-index: 2;
+    }
+
+    .sols-title {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+      pointer-events: none;
+    }
+
+    .sols-title h2 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .sols-title span {
+      font-size: 0.8rem;
+      color: #888888;
+      letter-spacing: 0.5px;
+      font-weight: 500;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 700px) {
+      .pricing-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+      }
+      .sols-title h2 {
+        font-size: 1.4rem;
+      }
+      .sols-header {
+        gap: 0.8rem;
+      }
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+    }
+
+    .price-option {
+      background: #0f0f0f;
+      border-radius: 0.8rem;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      border: 1px solid #333;
+      transition: border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .price-option:hover {
+      border-color: #ffffff;
+    }
+
+    .price-option i {
+      font-size: 1.5rem;
+      margin-bottom: 0.8rem;
+      color: #ffffff;
+    }
+
+    .price-option h3 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.2rem;
+      letter-spacing: 0.05em;
+    }
+
+    .sale-tag {
+      color: #ff3333;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      margin-left: 0.3rem;
+    }
+
+    .price-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.05em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      gap: 0.1rem;
+    }
+
+    .price-tag small {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #888888;
+      letter-spacing: normal;
+    }
+
+    .license-badge {
+      display: inline-block;
+      background: #1a1a1a;
+      border-radius: 0.3rem;
+      padding: 0.2rem 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #aaaaaa;
+      border: 1px solid #444;
+      margin-bottom: 0.5rem;
+    }
+
+    .stock-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+      margin-bottom: 1rem;
+    }
+
+    .stock-badge span {
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .add-to-cart-btn {
+      background: #ffffff;
+      border: 1px solid #ffffff;
+      color: #000000;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #dddddd;
+      border-color: #dddddd;
+    }
+
+    .loader-section {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      text-align: left;
+    }
+
+    .loader-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .loader-code {
+      background: #000;
+      border: 1px solid #222;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: #aaa;
+      word-break: break-all;
+      position: relative;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .loader-code:hover {
+      border-color: #666;
+    }
+
+    .loader-code .code-text {
+      color: #fff;
+      user-select: all;
+    }
+
+    .loader-code .copy-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      transition: color 0.2s;
+    }
+
+    .loader-code:hover .copy-icon {
+      color: #fff;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 2000;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 450px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+      position: relative;
+    }
+
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .modal-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .modal-price {
+      font-family: 'JetBrains Mono', monospace;
+      color: #aaaaaa;
+      font-size: 1rem;
+      margin-top: 0.2rem;
+    }
+
+    .close-modal {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: #fff;
+    }
+
+    .crypto-options {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .crypto-btn {
+      background: #111;
+      border: 1px solid #333;
+      color: #fff;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .crypto-btn:hover {
+      border-color: #fff;
+      background: #1a1a1a;
+    }
+
+    .crypto-btn.active {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .crypto-btn.full-width {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 500px) {
+      .crypto-btn.full-width {
+        grid-column: span 1;
+      }
+    }
+
+    .crypto-address-box {
+      display: none;
+      background: #111;
+      border: 1px solid #444;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    .crypto-address-box.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .address-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+      margin-bottom: 0.5rem;
+    }
+
+    .address-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #fff;
+      word-break: break-all;
+      background: #000;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      border: 1px solid #222;
+      margin-bottom: 0.8rem;
+      user-select: all;
+    }
+
+    .paypal-warning {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #ffcc00;
+      background: #1a1500;
+      border: 1px solid #665500;
+      padding: 0.5rem;
+      border-radius: 0.3rem;
+      margin-bottom: 0.8rem;
+      text-align: left;
+    }
+
+    .copy-btn-modal {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .copy-btn-modal:hover {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .copy-btn-modal.loading {
+      background: #111;
+      color: #666;
+      border-color: #333;
+      cursor: wait;
+    }
+
+    .spinner {
+      display: none;
+      width: 1rem;
+      height: 1rem;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      position: absolute;
+    }
+
+    .copy-btn-modal.loading .spinner {
+      display: block;
+    }
+
+    .copy-btn-modal.loading i {
+      display: none;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .paid-btn {
+      display: none;
+      background: #fff;
+      border: 1px solid #fff;
+      color: #000;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .paid-btn:hover {
+      background: #ddd;
+      border-color: #ddd;
+    }
+
+    .paid-btn.active {
+      display: block;
+    }
+
+    .success-message {
+      display: none;
+      background: #111;
+      border: 1px dashed #555;
+      border-radius: 0.5rem;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #fff;
+      line-height: 1.6;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .success-message.active {
+      display: block;
+    }
+
+    .success-message a {
+      color: #fff;
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    .success-message a:hover {
+      color: #aaa;
+    }
+
+    .discord-ticket-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: #5865f2;
+      border: 1px solid #5865f2;
+      color: #fff;
+      width: 100%;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      margin-top: 0.8rem;
+      transition: all 0.2s;
+    }
+
+    .discord-ticket-btn:hover {
+      background: #4752c4;
+      border-color: #4752c4;
+    }
+
+    .giftcard-container {
+      display: none;
+      margin-top: 1rem;
+      background: #0a0a0a;
+      border: 1px solid #333;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .giftcard-container.active {
+      display: block;
+    }
+
+    .giftcard-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: #aaa;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .giftcard-select {
+      width: 100%;
+      background: #000;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .giftcard-select:focus {
+      border-color: #fff;
+    }
+
+    .giftcard-input {
+      width: 100%;
+      background: #000;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 0.8rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      margin-bottom: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .giftcard-input:focus {
+      border-color: #fff;
+    }
+
+    .submit-giftcard-btn {
+      background: #222;
+      border: 1px solid #444;
+      color: #fff;
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 0.3rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .submit-giftcard-btn:hover {
+      background: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    .submit-giftcard-btn.loading {
+      background: #111;
+      color: #666;
+      border-color: #333;
+      cursor: wait;
+    }
+
+    .submit-giftcard-btn .spinner {
+      border-top-color: #fff;
+      position: relative;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 0.5rem;
+      margin-bottom: 0.1rem;
+    }
+
+    .submit-giftcard-btn.loading .spinner {
+      display: inline-block;
+    }
+
+    .sticky-cart {
+      position: fixed;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - 2rem);
+      max-width: 800px;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 1rem;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      transition: bottom 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 500;
+    }
+
+    .sticky-cart.active {
+      bottom: 1.5rem;
+    }
+
+    .cart-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cart-icon-wrapper {
+      position: relative;
+      font-size: 1.5rem;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -8px;
+      background: #fff;
+      color: #000;
+      font-size: 0.65rem;
+      font-weight: 800;
+      width: 1.2rem;
+      height: 1.2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .cart-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cart-total-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: #888;
+    }
+
+    .cart-total-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .cart-remove-btn {
+      background: none;
+      border: 1px solid #444;
+      color: #888;
+      border-radius: 0.3rem;
+      padding: 0.4rem 0.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .cart-remove-btn:hover {
+      background: #ff4d4d;
+      color: #fff;
+      border-color: #ff4d4d;
+    }
+
+    .checkout-btn {
+      background: #fff;
+      border: 1px solid #fff;
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      border-radius: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .checkout-btn:hover {
+      background: #ddd;
+      border-color: #ddd;
+    }
+
+    #cartFeedback {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      z-index: 9999;
+      pointer-events: none;
+      max-width: 380px;
+      width: calc(100% - 3rem);
+    }
+
+    .cart-toast {
+      background: rgba(17, 17, 17, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-left: 3px solid #ffffff;
+      padding: 0.9rem 1.2rem;
+      border-radius: 0.4rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: #ffffff;
+      border: 1px solid #333;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      pointer-events: auto;
+      transition: opacity 0.3s;
+    }
+
+    .cart-toast i {
+      color: #ffffff;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .cart-toast span {
+      line-height: 1.4;
+    }
+
+    footer {
+      margin-top: 1.5rem;
+      text-align: center;
+      color: #666666;
+      font-size: 0.8rem;
+      width: 100%;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    @media (max-width: 500px) {
+      body {
+        padding: 1.5rem 0.8rem 120px 0.8rem;
+      }
+      .hero h1 {
+        font-size: 1.6rem;
+      }
+      .sols-card {
+        padding: 1rem;
+      }
+      .crypto-options {
+        grid-template-columns: 1fr;
+      }
+      .top-bar {
+        justify-content: center;
+      }
+      .sticky-cart {
+        padding: 0.8rem 1rem;
+      }
+      .cart-total-price {
+        font-size: 1rem;
+      }
+      .checkout-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.8rem;
+      }
+      .cart-remove-btn {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.6rem;
+      }
+      #cartFeedback {
+        top: 1rem;
+        right: 1rem;
+        width: calc(100% - 2rem);
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="top-bar">
+      <a href="https://discord.gg/ZjzktnrhBD" target="_blank" class="dc-btn">
+        <i class="fab fa-discord"></i> join discord
+      </a>
+    </div>
+
+    <div class="hero">
+      <h1>sols.xyz</h1>
+      <p>select a plan below to add to your cart.</p>
+    </div>
+
+    <div class="sols-card">
+      <div class="sols-header">
+        <div class="lua-logo">
+          <div class="lua-moon"></div>
+          <div class="lua-star">★</div>
+          <div class="lua-text">lua</div>
+        </div>
+        <div class="sols-title">
+          <h2>sols.xyz keys</h2>
+          <span>premium script access</span>
+        </div>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- PRICES CHANGED HERE -->
+        <div class="price-option">
+          <i class="fas fa-infinity"></i>
+          <h3>lifetime <span class="sale-tag">(SALE)</span></h3>
+          <div class="price-tag">$6 <small>once</small></div>
+          <div class="license-badge">forever</div>
+          <div class="stock-badge">stock: <span id="stock-lifetime">10</span></div>
+          <button class="add-to-cart-btn" onclick="addToCart('Lifetime', 6)">add to cart</button>
+        </div>
+        
+        <div class="price-option">
+          <i class="fas fa-calendar-alt"></i>
+          <h3>monthly</h3>
+          <div class="price-tag">$4 <small>/mo</small></div>
+          <div class="license-badge">30 days</div>
+          <div class="stock-badge">stock: <span id="stock-monthly">10</span></div>
+          <button class="add-to-cart-btn" onclick="addToCart('Monthly', 4)">add to cart</button>
+        </div>
+
+        <div class="price-option">
+          <i class="fas fa-calendar-week"></i>
+          <h3>weekly</h3>
+          <div class="price-tag">$2 <small>/wk</small></div>
+          <div class="license-badge">7 days</div>
+          <div class="stock-badge">stock: <span id="stock-weekly">10</span></div>
+          <button class="add-to-cart-btn" onclick="addToCart('Weekly', 2)">add to cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="loader-section">
+      <div class="loader-title">
+        <i class="fas fa-code"></i> loader script
+      </div>
+      <div class="loader-code" onclick="copyLoaderScript(this)">
+        <span class="code-text">loadstring(game:HttpGet("https://getsols.xyz/loader.lua"))()</span>
+        <i class="fas fa-copy copy-icon"></i>
+      </div>
+    </div>
+
+    <div id="cartFeedback"></div>
+
+    <footer>
+      <i class="fas fa-lock"></i> sols.xyz
+    </footer>
+  </div>
+
+  <div class="sticky-cart" id="stickyCart">
+    <div class="cart-info">
+      <div class="cart-icon-wrapper">
+        <i class="fas fa-shopping-cart"></i>
+        <div class="cart-count" id="cartCount">0</div>
+      </div>
+      <div class="cart-details">
+        <span class="cart-total-label">total:</span>
+        <span class="cart-total-price" id="cartTotal">$0.00</span>
+      </div>
+      <button class="cart-remove-btn" onclick="removeFromCart()">
+        <i class="fas fa-trash"></i> remove
+      </button>
+    </div>
+    <button class="checkout-btn" onclick="openCheckout()">checkout</button>
+  </div>
+
+  <div class="modal-overlay" id="paymentModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="modalTitle">checkout</div>
+          <div class="modal-price" id="modalPrice">total: $0.00</div>
+        </div>
+        <button class="close-modal" onclick="closePaymentModal()"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #aaa; margin-bottom: 0.5rem;">select payment method</div>
+
+      <div class="crypto-options">
+        <button class="crypto-btn" onclick="selectCrypto('BTC', 'bc1qwa5rc9st9pjrvw8jar2n8rkmqk7r9fqepygngj', this)">
+          <i class="fab fa-bitcoin"></i> btc
+        </button>
+        <button class="crypto-btn" onclick="selectCrypto('ETH', '0x6da46e3645d90229e54a76536169102adcb93510', this)">
+          <i class="fab fa-ethereum"></i> eth
+        </button>
+        <button class="crypto-btn" onclick="selectCrypto('LTC', 'lng42c1qw3uwvqzuccqhugtvvhnomtzaq33', this)">
+          <i class="fas fa-litecoin-sign"></i> ltc
+        </button>
+        <button class="crypto-btn" onclick="selectCrypto('SOL', '2qxrbpyzxkaem8tssjcpgynddcvgpqbe5jyzrdzhdvez', this)">
+          <i class="fas fa-sun"></i> sol
+        </button>
+        <button class="crypto-btn full-width" onclick="selectCrypto('PayPal', 'M.Chauviere@proton.me', this, true)">
+          <i class="fab fa-paypal"></i> paypal
+        </button>
+        <button class="crypto-btn full-width" onclick="selectGiftCard(this)">
+          <i class="fas fa-gift"></i> gift card
+        </button>
+      </div>
+
+      <div class="crypto-address-box" id="addressBox">
+        <div class="address-label" id="selectedCryptoLabel">btc address</div>
+
+        <div class="paypal-warning" id="paypalWarning" style="display: none;">
+          <i class="fas fa-exclamation-triangle"></i> important: send as <strong>friends and family</strong> only.
+        </div>
+
+        <div class="address-text" id="selectedAddressText">...</div>
+
+        <button class="copy-btn-modal" id="copyAddressBtn" onclick="copyModalAddress(this)">
+          <div class="spinner"></div>
+          <span class="btn-text"><i class="fas fa-copy"></i> copy address</span>
+        </button>
+
+        <button class="paid-btn" id="paidBtn" onclick="showSuccessMessage()">i have paid</button>
+      </div>
+
+      <div class="giftcard-container" id="giftcardBox">
+        <label class="giftcard-label">your discord username (must start with @):</label>
+        <input type="text" id="discordUsernameInput" class="giftcard-input" placeholder="e.g. @sols" autocomplete="off" required>
+
+        <label class="giftcard-label">select gift card type:</label>
+        <select class="giftcard-select" id="giftcardType">
+          <option value="Amazon">amazon gift card</option>
+          <option value="Steam">steam gift card</option>
+          <option value="Roblox">roblox gift card</option>
+          <option value="Visa">visa prepaid card</option>
+          <option value="Other">other</option>
+        </select>
+
+        <label class="giftcard-label">enter gift card code (min 5 chars):</label>
+        <input type="text" id="giftcardInput" class="giftcard-input" placeholder="paste code here..." autocomplete="off" required>
+
+        <button class="submit-giftcard-btn" id="submitGiftcardBtn" onclick="submitGiftCard()">
+          <div class="spinner"></div>
+          <span class="btn-text">submit gift card</span>
+        </button>
+      </div>
+
+      <div class="success-message" id="successMessage">
+        <div style="font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.8rem;" id="successTitle">
+          > payment received.
+        </div>
+        <div id="successText">
+          to claim your key, please:<br><br>
+          1. take a screenshot of your transaction.<br>
+          2. join our discord server.<br>
+          3. open a ticket and attach the screenshot.<br><br>
+          <em>alternatively, you can email the screenshot to <a href="mailto:sols.xyz@proton.me">sols.xyz@proton.me</a>.</em>
+        </div>
+
+        <a href="https://discord.gg/ZjzktnrhBD" target="_blank" class="discord-ticket-btn">
+          <i class="fab fa-discord"></i> make a ticket on discord
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const WEBHOOK_URL = 'https://discord.com/api/webhooks/1561513019400257646/BEOkyf85ZJ40QeJP_NrOBNULpWGoPvOhYeajDpwV1UCyD8-u9yMXQ6Ci9CBh1TIPOBNW';
+
+    let cart = [];
+    let totalPrice = 0;
+
+    window.addToCart = function(plan, price) {
+      if (cart.length >= 1) {
+        showToast('> warning: you can only buy 1 key at a time. please remove the current item first.', false);
+        return;
+      }
+
+      cart.push({ plan: plan, price: price });
+      totalPrice += price;
+
+      document.getElementById('cartCount').innerText = cart.length;
+      document.getElementById('cartTotal').innerText = '$' + totalPrice.toFixed(2);
+
+      document.getElementById('stickyCart').classList.add('active');
+
+      showToast('> ' + plan + ' key added to cart');
+    };
+
+    window.removeFromCart = function() {
+      cart = [];
+      totalPrice = 0;
+      document.getElementById('cartCount').innerText = '0';
+      document.getElementById('cartTotal').innerText = '$0.00';
+      document.getElementById('stickyCart').classList.remove('active');
+      showToast('> item removed from cart');
+    };
+
+    window.openCheckout = function() {
+      if (cart.length === 0) {
+        showToast('> your cart is empty.', false);
+        return;
+      }
+
+      const planNames = cart.map(item => item.plan).join(', ');
+
+      document.getElementById('modalTitle').innerText = 'checkout';
+      document.getElementById('modalPrice').innerText = 'items: ' + planNames + ' | total: $' + totalPrice.toFixed(2);
+
+      const addressBox = document.getElementById('addressBox');
+      const giftcardBox = document.getElementById('giftcardBox');
+      const successMessage = document.getElementById('successMessage');
+      const paypalWarning = document.getElementById('paypalWarning');
+      const paidBtn = document.getElementById('paidBtn');
+
+      addressBox.classList.remove('active');
+      giftcardBox.classList.remove('active');
+      successMessage.classList.remove('active');
+      paypalWarning.style.display = 'none';
+      paidBtn.classList.remove('active');
+
+      document.querySelectorAll('.crypto-btn').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById('paymentModal').classList.add('active');
+    };
+
+    window.closePaymentModal = function() {
+      document.getElementById('paymentModal').classList.remove('active');
+    };
+
+    document.getElementById('paymentModal').addEventListener('click', function(e) {
+      if (e.target === document.getElementById('paymentModal')) {
+        closePaymentModal();
+      }
+    });
+
+    let currentAddress = '';
+    let currentCrypto = '';
+
+    window.selectCrypto = function(crypto, address, btnElement, isPaypal) {
+      document.querySelectorAll('.crypto-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      currentCrypto = crypto;
+      currentAddress = address;
+
+      const selectedCryptoLabel = document.getElementById('selectedCryptoLabel');
+      const selectedAddressText = document.getElementById('selectedAddressText');
+      const paypalWarning = document.getElementById('paypalWarning');
+
+      selectedCryptoLabel.innerText = isPaypal ? 'paypal email' : crypto + ' address';
+      selectedAddressText.innerText = address;
+
+      if (isPaypal) {
+        paypalWarning.style.display = 'block';
+      } else {
+        paypalWarning.style.display = 'none';
+      }
+
+      document.getElementById('giftcardBox').classList.remove('active');
+      document.getElementById('addressBox').classList.add('active');
+
+      const successMessage = document.getElementById('successMessage');
+      successMessage.classList.remove('active');
+
+      const paidBtn = document.getElementById('paidBtn');
+      paidBtn.classList.remove('active');
+      paidBtn.classList.add('active');
+    };
+
+    window.selectGiftCard = function(btnElement) {
+      document.querySelectorAll('.crypto-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      currentCrypto = 'Gift Card';
+
+      document.getElementById('addressBox').classList.remove('active');
+      document.getElementById('successMessage').classList.remove('active');
+      document.getElementById('giftcardBox').classList.add('active');
+    };
+
+    window.copyModalAddress = function(btnElement) {
+      if (!currentAddress) return;
+
+      btnElement.classList.add('loading');
+      btnElement.querySelector('.btn-text').innerHTML = 'processing...';
+
+      setTimeout(function() {
+        navigator.clipboard.writeText(currentAddress).then(function() {
+
+          btnElement.classList.remove('loading');
+          btnElement.querySelector('.btn-text').innerHTML = '<i class="fas fa-check"></i> copied!';
+
+          showToast('> ' + currentCrypto + ' ' + (currentCrypto === 'PayPal' ? 'email' : 'address') + ' copied successfully');
+
+          setTimeout(function() {
+            btnElement.querySelector('.btn-text').innerHTML = '<i class="fas fa-copy"></i> copy address';
+          }, 2000);
+
+        }).catch(function(err) {
+          btnElement.classList.remove('loading');
+          btnElement.querySelector('.btn-text').innerHTML = '<i class="fas fa-times"></i> failed';
+          setTimeout(function() {
+            btnElement.querySelector('.btn-text').innerHTML = '<i class="fas fa-copy"></i> copy address';
+          }, 2000);
+        });
+      }, 800);
+    };
+
+    window.submitGiftCard = function() {
+      const username = document.getElementById('discordUsernameInput').value.trim();
+      const type = document.getElementById('giftcardType').value;
+      const code = document.getElementById('giftcardInput').value.trim();
+      const submitGiftcardBtn = document.getElementById('submitGiftcardBtn');
+
+      if (!username) {
+        showToast('> please enter your discord username.', false);
+        document.getElementById('discordUsernameInput').focus();
+        return;
+      }
+
+      if (!username.startsWith('@')) {
+        showToast('> discord username must start with @.', false);
+        document.getElementById('discordUsernameInput').focus();
+        return;
+      }
+
+      if (code.length < 5) {
+        showToast('> gift card code must be at least 5 characters.', false);
+        document.getElementById('giftcardInput').focus();
+        return;
+      }
+
+      submitGiftcardBtn.classList.add('loading');
+      submitGiftcardBtn.querySelector('.btn-text').innerText = 'processing...';
+      submitGiftcardBtn.disabled = true;
+
+      const planNames = cart.map(item => item.plan).join(', ');
+      const payload = {
+        content: 'new gift card submitted!\n**user:** ' + username + '\n**plan:** ' + planNames + ' ($' + totalPrice.toFixed(2) + ')\n**type:** ' + type + '\n**code:** `' + code + '`'
+      };
+
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).then(function(response) {
+        if (response.ok) {
+          submitGiftcardBtn.classList.remove('loading');
+          submitGiftcardBtn.querySelector('.btn-text').innerText = 'submitted!';
+          document.getElementById('giftcardBox').classList.remove('active');
+
+          document.getElementById('successTitle').innerText = '> gift card submitted!';
+          document.getElementById('successText').innerHTML = 'your gift card has been sent for verification.<br><br>please make a ticket in our discord server to claim your key. one of our staff members will assist you shortly.';
+
+          document.getElementById('successMessage').classList.add('active');
+          showToast('> gift card submitted successfully');
+
+          cart = [];
+          totalPrice = 0;
+          document.getElementById('cartCount').innerText = '0';
+          document.getElementById('cartTotal').innerText = '$0.00';
+          document.getElementById('stickyCart').classList.remove('active');
+
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      }).catch(function(error) {
+        console.error('Error:', error);
+        submitGiftcardBtn.classList.remove('loading');
+        submitGiftcardBtn.querySelector('.btn-text').innerText = 'submit gift card';
+        submitGiftcardBtn.disabled = false;
+        showToast('> error submitting. please try again.', false);
+      });
+    };
+
+    window.showSuccessMessage = function() {
+      document.getElementById('successTitle').innerText = '> payment received.';
+      document.getElementById('successText').innerHTML = 'to claim your key, please:<br><br>1. take a screenshot of your transaction.<br>2. join our discord server.<br>3. open a ticket and attach the screenshot.<br><br><em>alternatively, you can email the screenshot to <a href="mailto:sols.xyz@proton.me">sols.xyz@proton.me</a>.</em>';
+
+      document.getElementById('successMessage').classList.add('active');
+      document.getElementById('paidBtn').classList.remove('active');
+      showToast('> payment confirmed. please open a ticket.');
+
+      cart = [];
+      totalPrice = 0;
+      document.getElementById('cartCount').innerText = '0';
+      document.getElementById('cartTotal').innerText = '$0.00';
+      document.getElementById('stickyCart').classList.remove('active');
+    };
+
+    window.copyLoaderScript = function(element) {
+      const text = 'loadstring(game:HttpGet("https://getsols.xyz/loader.lua"))()';
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('> loader script copied to clipboard');
+
+        const icon = element.querySelector('.copy-icon');
+        icon.classList.remove('fa-copy');
+        icon.classList.add('fa-check');
+        icon.style.color = '#fff';
+
+        setTimeout(function() {
+          icon.classList.remove('fa-check');
+          icon.classList.add('fa-copy');
+          icon.style.color = '';
+        }, 2000);
+      });
+    };
+
+    const cartFeedback = document.getElementById('cartFeedback');
+
+    function showToast(message, isSuccess) {
+      if (isSuccess === undefined) isSuccess = true;
+
+      const existingToast = document.querySelector('.cart-toast');
+      if (existingToast) existingToast.remove();
+
+      const toast = document.createElement('div');
+      toast.className = 'cart-toast';
+      toast.innerHTML = '<i class="fas ' + (isSuccess ? 'fa-terminal' : 'fa-exclamation-triangle') + '"></i><span>' + message + '</span>';
+
+      toast.style.opacity = '0.8';
+
+      cartFeedback.appendChild(toast);
+
+      setTimeout(function() {
+        if (toast.parentNode) {
+          toast.style.opacity = '0';
+          setTimeout(function() { toast.remove(); }, 300);
+        }
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
