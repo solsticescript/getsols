@@ -1,395 +1,381 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>getsols.xyz</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  :root {
-    --fg: #f5f5f5;
-    --dim: rgba(255,255,255,0.45);
-    --faint: rgba(255,255,255,0.12);
-  }
-
-  html, body {
-    height: 100%;
-    background: #000;
-    color: var(--fg);
-    font-family: 'JetBrains Mono', 'Courier New', monospace;
-    overflow: hidden;
-    cursor: crosshair;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* subtle vignette + grain */
-  body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 7;
-    background:
-      radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.85) 100%),
-      repeating-linear-gradient(
-        to bottom,
-        rgba(255,255,255,0.02) 0px,
-        rgba(255,255,255,0.02) 1px,
-        transparent 1px,
-        transparent 3px
-      );
-    mix-blend-mode: overlay;
-  }
-
-  canvas#stars {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-  }
-
-  /* cursor glow */
-  .cursor-glow {
-    position: fixed;
-    top: 0; left: 0;
-    width: 340px;
-    height: 340px;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 3;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(
-      circle,
-      rgba(255,255,255,0.20) 0%,
-      rgba(255,255,255,0.09) 22%,
-      rgba(255,255,255,0.035) 45%,
-      rgba(255,255,255,0) 72%
-    );
-    mix-blend-mode: screen;
-    transition: opacity 0.35s ease;
-  }
-
-  /* corner brackets */
-  .corner {
-    position: fixed;
-    width: 28px;
-    height: 28px;
-    border: 1px solid rgba(255,255,255,0.5);
-    z-index: 5;
-    pointer-events: none;
-    animation: cornerFade 3s ease-in-out infinite alternate;
-  }
-  .corner.tl { top: 22px;    left: 22px;    border-right: none; border-bottom: none; }
-  .corner.tr { top: 22px;    right: 22px;   border-left: none;  border-bottom: none; }
-  .corner.bl { bottom: 22px; left: 22px;    border-right: none; border-top: none; }
-  .corner.br { bottom: 22px; right: 22px;   border-left: none;  border-top: none; }
-
-  @keyframes cornerFade {
-    0%   { opacity: 0.35; }
-    100% { opacity: 0.75; }
-  }
-
-  .stage {
-    position: relative;
-    z-index: 6;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    padding: 20px;
-    text-align: center;
-  }
-
-  /* ---- Title ---- */
-  .title {
-    font-size: clamp(2.2rem, 8vw, 5rem);
-    letter-spacing: 0.15em;
-    font-weight: 700;
-    color: #fff;
-    text-shadow:
-      0 0 10px rgba(255,255,255,0.55),
-      0 0 30px rgba(255,255,255,0.25),
-      0 0 60px rgba(255,255,255,0.10);
-    min-height: 1.2em;
-    position: relative;
-    animation: titlePulse 4s ease-in-out infinite;
-  }
-
-  @keyframes titlePulse {
-    0%, 100% {
-      text-shadow:
-        0 0 10px rgba(255,255,255,0.55),
-        0 0 30px rgba(255,255,255,0.25),
-        0 0 60px rgba(255,255,255,0.10);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>getsols.xyz — sol is too powerful to be free.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    50% {
-      text-shadow:
-        0 0 14px rgba(255,255,255,0.75),
-        0 0 40px rgba(255,255,255,0.35),
-        0 0 80px rgba(255,255,255,0.15);
+
+    :root {
+      --bg: #050505;
+      --surface: #0f0f11;
+      --border: #222225;
+      --text-main: #e5e5e7;
+      --text-muted: #88888d;
+      --text-dark: #ffffff;
+      
+      --pink-primary: #ff8fab;
+      --pink-hover: #ff6b8e;
+      --radius-lg: 24px;
     }
-  }
 
-  .title .cursor {
-    display: inline-block;
-    width: 3px;
-    height: 0.85em;
-    background: #fff;
-    margin-left: 8px;
-    transform: translateY(0.08em);
-    box-shadow: 0 0 10px rgba(255,255,255,0.9);
-    animation: blink 1s steps(1) infinite;
-  }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Outfit', sans-serif;
+      line-height: 1.5;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-  @keyframes blink { 50% { opacity: 0; } }
+    /* ---------- BACKGROUND EFFECTS ---------- */
+    /* Static Noise Overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 10;
+    }
 
-  /* ---- Buttons ---- */
-  .buttons {
-    display: flex;
-    gap: 18px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    /* Floating Ambient Orbs */
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: -1;
+      opacity: 0.5;
+      pointer-events: none;
+    }
 
-  .btn {
-    position: relative;
-    display: inline-block;
-    padding: 18px 48px;
-    background: rgba(255,255,255,0.02);
-    color: #fff;
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 500;
-    letter-spacing: 0.35em;
-    text-transform: lowercase;
-    text-decoration: none;
-    border: 1px solid rgba(255,255,255,0.55);
-    border-radius: 6px;
-    overflow: hidden;
-    transition:
-      color 0.3s ease,
-      border-color 0.3s ease,
-      box-shadow 0.35s ease,
-      transform 0.25s ease,
-      letter-spacing 0.35s ease;
-    backdrop-filter: blur(2px);
-    cursor: pointer;
-  }
+    .orb-1 {
+      top: -10%;
+      left: 10%;
+      width: 40vw;
+      height: 40vh;
+      background: rgba(255, 71, 126, 0.2);
+      animation: float 12s ease-in-out infinite;
+    }
 
-  /* sliding fill */
-  .btn::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    transform: translateX(-101%);
-    transition: transform 0.45s cubic-bezier(.65,.05,.36,1);
-    z-index: -1;
-  }
+    .orb-2 {
+      bottom: -10%;
+      right: 10%;
+      width: 35vw;
+      height: 35vh;
+      background: rgba(255, 143, 171, 0.15);
+      animation: float 15s ease-in-out infinite reverse;
+    }
 
-  .btn:hover {
-    color: #000;
-    border-color: #fff;
-    letter-spacing: 0.42em;
-    transform: translateY(-2px);
-    box-shadow:
-      0 0 24px rgba(255,255,255,0.5),
-      0 0 60px rgba(255,255,255,0.22),
-      0 10px 40px rgba(255,255,255,0.08);
-  }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(50px, -50px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
 
-  .btn:hover::before {
-    transform: translateX(0);
-  }
+    .container {
+      width: min(1100px, 92%);
+      margin: 0 auto;
+      padding: 2rem 0;
+      position: relative;
+      z-index: 2;
+    }
 
-  /* ---- Hint ---- */
-  .hint {
-    font-size: 0.68rem;
-    letter-spacing: 0.55em;
-    text-transform: uppercase;
-    color: var(--dim);
-    animation: hintFade 3s ease-in-out infinite;
-  }
+    /* ---------- HEADER ---------- */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 6rem;
+    }
 
-  @keyframes hintFade {
-    0%, 100% { opacity: 0.5; }
-    50%      { opacity: 1; }
-  }
-</style>
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: -0.02em;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    /* Spinning Gradient Effect for .xyz */
+    .logo span {
+      background: linear-gradient(90deg, #ff8fab, #ff477e, #d94f70, #ff8fab);
+      background-size: 300% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: shine 3s linear infinite;
+      text-shadow: 0 0 15px rgba(255, 143, 171, 0.4);
+    }
+
+    @keyframes shine {
+      to { background-position: 300% center; }
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-dark);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      width: 0%;
+      height: 2px;
+      bottom: -4px;
+      left: 0;
+      background: var(--pink-primary);
+      transition: 0.3s;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ---------- HERO ---------- */
+    .hero-section {
+      text-align: center;
+      margin-bottom: 5rem;
+    }
+
+    /* Font matching the screenshot */
+    .hero-section h1 {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+      color: var(--text-dark);
+    }
+
+    /* The 'awake' style gradient effect */
+    .hero-section h1 span {
+      background: linear-gradient(90deg, #ff8fab, #ff477e, #ffb3c6, #ff477e, #ff8fab);
+      background-size: 300% 300%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: spin-gradient 4s linear infinite;
+      filter: drop-shadow(0 0 15px rgba(255, 71, 126, 0.3));
+    }
+
+    @keyframes spin-gradient {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    .hero-section p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+      max-width: 600px;
+      margin-inline: auto;
+    }
+
+    .hero-section .highlight-text {
+      color: var(--pink-primary);
+      font-weight: 500;
+      margin-bottom: 4rem;
+      display: block;
+    }
+
+    /* ---------- PRICING CARD ---------- */
+    .pricing-grid {
+      display: flex;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 1.8rem 1.8rem;
+      text-align: left;
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 350px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    /* Card Hover Lift & Glow */
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 25px 50px -12px rgba(255, 71, 126, 0.2);
+      border-color: rgba(255, 143, 171, 0.3);
+    }
+
+    .card-header {
+      margin-bottom: 1rem;
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    /* Added Text Below Title */
+    .card-description {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+
+    .card-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .card-features li {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-features i {
+      color: var(--pink-primary);
+      font-size: 0.8rem;
+    }
+
+    /* Pink Buy Button with Pulse */
+    .btn {
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: inherit;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      background: var(--pink-primary);
+      color: #000;
+      position: relative;
+      overflow: hidden;
+      animation: pulse-btn 2s infinite;
+      margin-top: auto;
+    }
+
+    @keyframes pulse-btn {
+      0% { box-shadow: 0 0 0 0 rgba(255, 143, 171, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(255, 143, 171, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 143, 171, 0); }
+    }
+    
+    .btn:hover {
+      background: var(--pink-hover);
+      transform: translateY(-2px);
+      animation: none;
+      box-shadow: 0 10px 20px -5px rgba(255, 107, 142, 0.4);
+    }
+
+    /* Button Shine Effect */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: 0.5s;
+    }
+
+    .btn:hover::after {
+      left: 100%;
+    }
+  </style>
 </head>
 <body>
 
-  <canvas id="stars"></canvas>
-  <div class="cursor-glow" id="glow"></div>
+  <!-- Background Effects -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
 
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
+  <div class="container">
+    <!-- HEADER -->
+    <header>
+      <a href="#" class="logo">
+        getsols<span>.xyz</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#pricing">Pricing</a>
+        <a href="#ui">Features</a>
+      </nav>
+    </header>
 
-  <main class="stage">
-    <h1 class="title"><span id="typed"></span><span class="cursor"></span></h1>
+    <!-- HERO -->
+    <section class="hero-section" id="pricing">
+      <h1>sol is too <span>powerful</span><br>to be free.</h1>
+      <p>highest quality cheap scripts for many games.</p>
+      <span class="highlight-text">getsols is the highest</span>
 
-    <div class="buttons">
-      <a class="btn" href="https://discord.gg/4whvyDFNBE" target="_blank" rel="noopener">free script</a>
-      <a class="btn" href="https://discord.gg/4whvyDFNBE" target="_blank" rel="noopener">get key</a>
-    </div>
+      <!-- CARD -->
+      <div class="pricing-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">sol keys</div>
+          </div>
+          
+          <div class="card-description">
+            Get instant access to our premium undetected scripts. Works flawlessly on all supported games.
+          </div>
 
-    <p class="hint">click to join</p>
-  </main>
+          <ul class="card-features">
+            <li><i class="fas fa-check"></i> Undetected & Safe</li>
+            <li><i class="fas fa-check"></i> Lifetime Access</li>
+            <li><i class="fas fa-check"></i> Instant Delivery</li>
+          </ul>
 
-<script>
-/* ---------- Typewriter ---------- */
-const text = "getsols.xyz";
-const el = document.getElementById("typed");
-let i = 0, forward = true;
-function typeLoop() {
-  if (forward) {
-    el.textContent = text.slice(0, ++i);
-    if (i === text.length) { forward = false; return setTimeout(typeLoop, 2400); }
-    setTimeout(typeLoop, 120);
-  } else {
-    el.textContent = text.slice(0, --i);
-    if (i === 0) { forward = true; return setTimeout(typeLoop, 800); }
-    setTimeout(typeLoop, 55);
-  }
-}
-typeLoop();
+          <a href="https://getsols.xyz/buy" class="btn">Buy</a>
+        </div>
+      </div>
+    </section>
+  </div>
 
-/* ---------- Cursor glow ---------- */
-const glow = document.getElementById("glow");
-
-const canvas = document.getElementById("stars");
-const ctx = canvas.getContext("2d");
-let W, H;
-
-function resize() {
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-}
-resize();
-window.addEventListener("resize", resize);
-
-const target = { x: 0, y: 0 };
-const current = { x: 0, y: 0 };
-const cursor = { x: W / 2, y: H / 2 };
-const cursorEased = { x: W / 2, y: H / 2 };
-
-window.addEventListener("mousemove", (e) => {
-  target.x = (e.clientX / W) * 2 - 1;
-  target.y = (e.clientY / H) * 2 - 1;
-  cursor.x = e.clientX;
-  cursor.y = e.clientY;
-});
-window.addEventListener("mouseleave", () => { glow.style.opacity = "0"; });
-window.addEventListener("mouseenter", () => { glow.style.opacity = "1"; });
-
-const LAYERS = [
-  { count: 140, r: 0.5, speed: 0.005, parallax: 8  },
-  { count: 90,  r: 0.9, speed: 0.010, parallax: 20 },
-  { count: 45,  r: 1.4, speed: 0.018, parallax: 34 },
-];
-
-const layers = LAYERS.map((cfg) => {
-  const stars = [];
-  for (let i = 0; i < cfg.count; i++) {
-    stars.push({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: cfg.r * (0.7 + Math.random() * 0.6),
-      base: 0.3 + Math.random() * 0.5,
-      phase: Math.random() * Math.PI * 2,
-      speed: cfg.speed,
-      parallax: cfg.parallax,
-    });
-  }
-  return stars;
-});
-
-/* Meteors */
-const meteors = [];
-function spawnMeteor() {
-  meteors.push({
-    x: Math.random() * W,
-    y: -20,
-    len: Math.random() * 100 + 80,
-    speed: Math.random() * 5 + 5,
-    angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
-    life: 1,
-  });
-}
-setInterval(spawnMeteor, 1100);
-
-function draw() {
-  /* motion blur trail */
-  ctx.fillStyle = "rgba(0,0,0,0.35)";
-  ctx.fillRect(0, 0, W, H);
-
-  const t = performance.now() / 1000;
-
-  current.x += (target.x - current.x) * 0.05;
-  current.y += (target.y - current.y) * 0.05;
-  cursorEased.x += (cursor.x - cursorEased.x) * 0.18;
-  cursorEased.y += (cursor.y - cursorEased.y) * 0.18;
-
-  glow.style.transform = `translate(${cursorEased.x}px, ${cursorEased.y}px) translate(-50%, -50%)`;
-
-  for (const stars of layers) {
-    for (const s of stars) {
-      s.phase += s.speed;
-      const a = s.base + Math.sin(s.phase) * 0.35;
-      const px = s.x - current.x * s.parallax;
-      const py = s.y - current.y * s.parallax;
-
-      ctx.beginPath();
-      ctx.fillStyle = `rgba(255,255,255,${Math.max(0, Math.min(1, a))})`;
-      ctx.arc(px, py, s.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  for (let i = meteors.length - 1; i >= 0; i--) {
-    const m = meteors[i];
-    m.x += Math.cos(m.angle) * m.speed;
-    m.y += Math.sin(m.angle) * m.speed;
-
-    const tailX = m.x - Math.cos(m.angle) * m.len;
-    const tailY = m.y - Math.sin(m.angle) * m.len;
-
-    const grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
-    grad.addColorStop(0, "rgba(255,255,255,1)");
-    grad.addColorStop(0.35, "rgba(255,255,255,0.5)");
-    grad.addColorStop(1, "rgba(255,255,255,0)");
-
-    ctx.strokeStyle = grad;
-    ctx.lineWidth = 1.8;
-    ctx.shadowColor = "rgba(255,255,255,0.9)";
-    ctx.shadowBlur = 12;
-    ctx.beginPath();
-    ctx.moveTo(m.x, m.y);
-    ctx.lineTo(tailX, tailY);
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-
-    /* bright head */
-    ctx.beginPath();
-    ctx.fillStyle = "rgba(255,255,255,1)";
-    ctx.arc(m.x, m.y, 1.6, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (m.y > H + 100 || m.x > W + 100 || m.x < -100) {
-      meteors.splice(i, 1);
-    }
-  }
-
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
 </body>
 </html>
